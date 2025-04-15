@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
 }
 
 /// A custom segmented control that displays all options in one big pill-shaped oval.
-/// A moving oval (using AnimatedAlign) encapsulates the selected option.
+/// A white moving oval encapsulates the selected option.
 class PillTabBar extends StatefulWidget {
   final List<String> tabs;
   final int initialIndex;
@@ -33,7 +33,7 @@ class PillTabBar extends StatefulWidget {
   });
 
   @override
-  _PillTabBarState createState() => _PillTabBarState();
+  State<PillTabBar> createState() => _PillTabBarState();
 }
 
 class _PillTabBarState extends State<PillTabBar> {
@@ -49,19 +49,18 @@ class _PillTabBarState extends State<PillTabBar> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       double totalWidth = constraints.maxWidth;
-      // Divide the available width by number of tabs and subtract a bit for margin.
+      // Divide available width evenly among tabs (subtracting a little margin).
       double indicatorWidth = totalWidth / widget.tabs.length - 8;
 
       return Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          // Outer container is blue.
-          color: Colors.blue,
+          color: Colors.blue, // Big container is blue.
           borderRadius: BorderRadius.circular(30),
         ),
         child: Stack(
           children: [
-            // Moving oval indicator that animates behind the selected option.
+            // Animated white oval indicator under the selected tab.
             AnimatedAlign(
               alignment: _calculateAlignment(),
               duration: const Duration(milliseconds: 300),
@@ -70,7 +69,6 @@ class _PillTabBarState extends State<PillTabBar> {
                 width: indicatorWidth,
                 height: 40,
                 decoration: BoxDecoration(
-                  // Indicator is white.
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -93,11 +91,8 @@ class _PillTabBarState extends State<PillTabBar> {
                       child: Text(
                         widget.tabs[index],
                         style: TextStyle(
-                          // When selected, the text becomes blue, otherwise white.
                           color: selectedIndex == index ? Colors.blue : Colors.white,
-                          fontWeight: selectedIndex == index
-                              ? FontWeight.bold
-                              : FontWeight.normal,
+                          fontWeight: selectedIndex == index ? FontWeight.bold : FontWeight.normal,
                         ),
                       ),
                     ),
@@ -111,7 +106,7 @@ class _PillTabBarState extends State<PillTabBar> {
     });
   }
 
-  /// Maps the selectedIndex to an Alignment with x in [-1, 1].
+  /// Maps the selected index to an Alignment value.
   Alignment _calculateAlignment() {
     if (widget.tabs.length == 1) return Alignment.center;
     double x = -1.0 + (selectedIndex * 2 / (widget.tabs.length - 1));
@@ -124,7 +119,7 @@ class DoctorProfilePage extends StatefulWidget {
   const DoctorProfilePage({super.key});
 
   @override
-  _DoctorProfilePageState createState() => _DoctorProfilePageState();
+  State<DoctorProfilePage> createState() => _DoctorProfilePageState();
 }
 
 class _DoctorProfilePageState extends State<DoctorProfilePage> {
@@ -149,45 +144,116 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          const HeaderSection(),
-          const SizedBox(height: 16),
-          // Custom segmented control.
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: PillTabBar(
-              tabs: _tabs,
-              initialIndex: _selectedTab,
-              onTabChanged: (index) {
-                setState(() {
-                  _selectedTab = index;
-                });
-              },
+      // Wrap the entire page in a SingleChildScrollView so it is scrollable.
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Cover image at the very top using asset.
+            Image.asset(
+              'assets/coverpic.jpg',
+              height: 200,
+              width: double.infinity,
+              fit: BoxFit.cover,
             ),
-          ),
-          const SizedBox(height: 16),
-          Expanded(child: _buildTabContent()),
-        ],
+            const HeaderSection(),
+            const SizedBox(height: 16),
+            const StatCardsSection(),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: PillTabBar(
+                tabs: _tabs,
+                initialIndex: _selectedTab,
+                onTabChanged: (index) {
+                  setState(() {
+                    _selectedTab = index;
+                  });
+                },
+              ),
+            ),
+            const SizedBox(height: 16),
+            _buildTabContent(),
+          ],
+        ),
       ),
     );
   }
 }
 
-/// ---------------- About Tab Content ----------------
+/// Widget for an individual stat card.
+class StatCard extends StatelessWidget {
+  final String value;
+  final String label;
+
+  const StatCard({super.key, required this.value, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.all(4),
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              // Using withAlpha instead of withOpacity to avoid precision loss.
+              color: Colors.grey.withAlpha(77),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            )
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              value,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Widget that displays 3 stat cards in a row.
+class StatCardsSection extends StatelessWidget {
+  const StatCardsSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: const [
+        StatCard(value: "11 yrs", label: "Experience"),
+        StatCard(value: "4.8", label: "Rating"),
+        StatCard(value: "100+", label: "Patients"),
+      ],
+    );
+  }
+}
+
+/// Content for the About tab.
 class AboutTabContent extends StatelessWidget {
   const AboutTabContent({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(16),
+    return Column(
       children: [
         const DescriptionSection(),
         const SizedBox(height: 20),
         SpecializationsSection(),
         const SizedBox(height: 20),
-        const LocationSection(), // Properly defined below.
+        const LocationSection(),
         const SizedBox(height: 20),
         const ReviewsSection(),
         const SizedBox(height: 20),
@@ -198,50 +264,61 @@ class AboutTabContent extends StatelessWidget {
   }
 }
 
-/// ---------------- Availability, Experience, and Education Placeholders ----------------
+/// Placeholder widget for Availability tab content.
 class AvailabilityTabContent extends StatelessWidget {
   const AvailabilityTabContent({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text(
-        'Availability Information Here',
-        style: TextStyle(fontSize: 18),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Text(
+          'Availability Information Here',
+          style: TextStyle(fontSize: 18),
+        ),
       ),
     );
   }
 }
 
+/// Placeholder widget for Experience tab content.
 class ExperienceTabContent extends StatelessWidget {
   const ExperienceTabContent({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text(
-        'Experience Information Here',
-        style: TextStyle(fontSize: 18),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Text(
+          'Experience Information Here',
+          style: TextStyle(fontSize: 18),
+        ),
       ),
     );
   }
 }
 
+/// Placeholder widget for Education tab content.
 class EducationTabContent extends StatelessWidget {
   const EducationTabContent({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text(
-        'Education Information Here',
-        style: TextStyle(fontSize: 18),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Text(
+          'Education Information Here',
+          style: TextStyle(fontSize: 18),
+        ),
       ),
     );
   }
 }
 
-/// ---------------- Header Section ----------------
+/// Header section using asset images.
 class HeaderSection extends StatelessWidget {
   const HeaderSection({super.key});
 
@@ -249,14 +326,12 @@ class HeaderSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Background image.
+        // Header background image from assets.
         Container(
           height: 250,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(
-                'https://via.placeholder.com/400x250?text=Background+Image',
-              ),
+              image: AssetImage('assets/header_bg.jpg'),
               fit: BoxFit.cover,
             ),
           ),
@@ -287,9 +362,8 @@ class HeaderSection extends StatelessWidget {
                 backgroundColor: Colors.white,
                 child: CircleAvatar(
                   radius: 36,
-                  backgroundImage: NetworkImage(
-                    'https://via.placeholder.com/150?text=Profile+Photo',
-                  ),
+                  // Using the doctor profile asset.
+                  backgroundImage: AssetImage('assets/doctorprofilepic.png'),
                 ),
               ),
               const SizedBox(width: 16),
@@ -300,11 +374,7 @@ class HeaderSection extends StatelessWidget {
                   children: const [
                     Text(
                       'Dr. KeerthiRaj',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                     Text(
                       'Neurologist',
@@ -317,17 +387,11 @@ class HeaderSection extends StatelessWidget {
                           width: 8,
                           height: 8,
                           child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.green,
-                            ),
+                            decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.green),
                           ),
                         ),
                         SizedBox(width: 4),
-                        Text(
-                          'Available Today',
-                          style: TextStyle(fontSize: 14, color: Colors.white),
-                        ),
+                        Text('Available Today', style: TextStyle(fontSize: 14, color: Colors.white)),
                       ],
                     ),
                     SizedBox(height: 8),
@@ -353,7 +417,7 @@ class HeaderSection extends StatelessWidget {
   }
 }
 
-/// ---------------- Description Section ----------------
+/// Description section with fee statcards.
 class DescriptionSection extends StatelessWidget {
   const DescriptionSection({super.key});
 
@@ -367,37 +431,11 @@ class DescriptionSection extends StatelessWidget {
           style: TextStyle(fontSize: 16, color: Colors.black87),
         ),
         SizedBox(height: 12),
+        // Two statcards for fee details.
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Session Fee',
-                  style: TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  '₹600.00',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Online Fee',
-                  style: TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  '₹450.00',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
+            StatCard(value: "₹600.00", label: "Session Fee"),
+            StatCard(value: "₹450.00", label: "Online Fee"),
           ],
         )
       ],
@@ -405,7 +443,7 @@ class DescriptionSection extends StatelessWidget {
   }
 }
 
-/// ---------------- Specializations Section ----------------
+/// Specializations section.
 class SpecializationsSection extends StatelessWidget {
   const SpecializationsSection({super.key});
 
@@ -431,9 +469,7 @@ class SpecializationsSection extends StatelessWidget {
     void showMoreOptions() {
       showModalBottomSheet(
         context: context,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
         builder: (BuildContext context) {
           return Padding(
             padding: const EdgeInsets.all(16),
@@ -467,30 +503,21 @@ class SpecializationsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Specializations',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
+        const Text('Specializations', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
-        const Text(
-          'Dermatology',
-          style: TextStyle(fontSize: 16),
-        ),
+        const Text('Dermatology', style: TextStyle(fontSize: 16)),
         const SizedBox(height: 16),
-        const Text(
-          'Services Offered',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
+        const Text('Services Offered', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         Wrap(
           spacing: 8,
           runSpacing: 8,
-          children: services.map((service) {
-            return Chip(
-              backgroundColor: Colors.grey[200],
-              label: Text(service),
-            );
-          }).toList(),
+          children: services
+              .map((service) => Chip(
+            label: Text(service),
+            backgroundColor: Colors.grey[200],
+          ))
+              .toList(),
         ),
         Align(
           alignment: Alignment.centerRight,
@@ -504,7 +531,7 @@ class SpecializationsSection extends StatelessWidget {
   }
 }
 
-/// ---------------- Bronze Badge Widget ----------------
+/// Bronze badge widget using an asset image.
 class BronzeBadgeWidget extends StatelessWidget {
   const BronzeBadgeWidget({super.key});
 
@@ -521,20 +548,17 @@ class BronzeBadgeWidget extends StatelessWidget {
         children: [
           const CircleAvatar(
             radius: 20,
-            backgroundImage: NetworkImage('https://via.placeholder.com/40?text=B'),
+            backgroundImage: AssetImage('assets/bronze badge png.png'),
           ),
           const SizedBox(width: 8),
-          const Text(
-            'Bronze Badge Holder',
-            style: TextStyle(color: Colors.white, fontSize: 14),
-          ),
+          const Text('Bronze Badge Holder', style: TextStyle(color: Colors.white, fontSize: 14)),
         ],
       ),
     );
   }
 }
 
-/// ---------------- Location Section ----------------
+/// Location section using an asset image.
 class LocationSection extends StatelessWidget {
   const LocationSection({super.key});
 
@@ -543,17 +567,14 @@ class LocationSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Location',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
+        const Text('Location', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         Container(
           height: 200,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             image: const DecorationImage(
-              image: NetworkImage('https://via.placeholder.com/400x200?text=Map+Placeholder'),
+              image: AssetImage('assets/mapimage.jpeg'),
               fit: BoxFit.cover,
             ),
           ),
@@ -563,7 +584,7 @@ class LocationSection extends StatelessWidget {
   }
 }
 
-/// ---------------- Reviews Section ----------------
+/// Reviews section.
 class ReviewsSection extends StatelessWidget {
   const ReviewsSection({super.key});
 
@@ -577,10 +598,7 @@ class ReviewsSection extends StatelessWidget {
             BronzeBadgeWidget(),
             SizedBox(width: 16),
             Expanded(
-              child: Text(
-                '80% of visitors recommend consulting this doctor',
-                style: TextStyle(fontSize: 14),
-              ),
+              child: Text('80% of visitors recommend consulting this doctor', style: TextStyle(fontSize: 14)),
             ),
           ],
         ),
@@ -599,10 +617,7 @@ class ReviewsSection extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8),
-              Text(
-                'Dr. KeerthiRaj provided exceptional care for my skin. I highly recommend him for anyone looking for a specialist in skin care.',
-                style: TextStyle(fontSize: 14),
-              ),
+              Text('Dr. KeerthiRaj provided exceptional care for my skin. I highly recommend him for anyone looking for a specialist in skin care.', style: TextStyle(fontSize: 14)),
             ],
           ),
         )
@@ -611,7 +626,7 @@ class ReviewsSection extends StatelessWidget {
   }
 }
 
-/// ---------------- Booking Section ----------------
+/// Booking section.
 class BookingSection extends StatelessWidget {
   const BookingSection({super.key});
 
@@ -628,11 +643,7 @@ class BookingSection extends StatelessWidget {
       ),
       child: const Text(
         'Book Now',
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
       ),
     );
   }
