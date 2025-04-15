@@ -95,6 +95,9 @@ class ProfileHeader extends StatelessWidget {
     );
   }
 }
+class StatsContainer extends StatelessWidget {
+  const StatsContainer({super.key});
+
 
 class DescriptionSection extends StatelessWidget {
   const DescriptionSection({super.key});
