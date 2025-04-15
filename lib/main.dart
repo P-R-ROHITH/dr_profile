@@ -48,20 +48,20 @@ class _PillTabBarState extends State<PillTabBar> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      // Calculate the available width to evenly size the indicator.
       double totalWidth = constraints.maxWidth;
-      // Subtracting a bit of margin so that the indicator padding is included.
+      // Divide the available width by number of tabs and subtract a bit for margin.
       double indicatorWidth = totalWidth / widget.tabs.length - 8;
 
       return Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: Colors.grey[200],
+          // Outer container is blue.
+          color: Colors.blue,
           borderRadius: BorderRadius.circular(30),
         ),
         child: Stack(
           children: [
-            // Moving oval indicator that animates using AnimatedAlign.
+            // Moving oval indicator that animates behind the selected option.
             AnimatedAlign(
               alignment: _calculateAlignment(),
               duration: const Duration(milliseconds: 300),
@@ -70,7 +70,8 @@ class _PillTabBarState extends State<PillTabBar> {
                 width: indicatorWidth,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  // Indicator is white.
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
@@ -84,9 +85,7 @@ class _PillTabBarState extends State<PillTabBar> {
                       setState(() {
                         selectedIndex = index;
                       });
-                      if (widget.onTabChanged != null) {
-                        widget.onTabChanged!(index);
-                      }
+                      widget.onTabChanged?.call(index);
                     },
                     child: Container(
                       height: 40,
@@ -94,7 +93,8 @@ class _PillTabBarState extends State<PillTabBar> {
                       child: Text(
                         widget.tabs[index],
                         style: TextStyle(
-                          color: selectedIndex == index ? Colors.white : Colors.black,
+                          // When selected, the text becomes blue, otherwise white.
+                          color: selectedIndex == index ? Colors.blue : Colors.white,
                           fontWeight: selectedIndex == index
                               ? FontWeight.bold
                               : FontWeight.normal,
@@ -111,8 +111,7 @@ class _PillTabBarState extends State<PillTabBar> {
     });
   }
 
-  /// Calculates alignment for the moving indicator.
-  /// For n tabs, maps selectedIndex to Alignment.x in [-1, 1].
+  /// Maps the selectedIndex to an Alignment with x in [-1, 1].
   Alignment _calculateAlignment() {
     if (widget.tabs.length == 1) return Alignment.center;
     double x = -1.0 + (selectedIndex * 2 / (widget.tabs.length - 1));
@@ -120,8 +119,7 @@ class _PillTabBarState extends State<PillTabBar> {
   }
 }
 
-/// The main doctor profile page that uses the custom PillTabBar.
-/// The content below changes based on the current selection.
+/// The main doctor profile page.
 class DoctorProfilePage extends StatefulWidget {
   const DoctorProfilePage({super.key});
 
@@ -155,7 +153,7 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
         children: [
           const HeaderSection(),
           const SizedBox(height: 16),
-          // The custom segmented control sits within horizontal padding.
+          // Custom segmented control.
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: PillTabBar(
@@ -169,7 +167,6 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
             ),
           ),
           const SizedBox(height: 16),
-          // Expanded widget shows the content below based on the selected tab.
           Expanded(child: _buildTabContent()),
         ],
       ),
@@ -185,17 +182,17 @@ class AboutTabContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.all(16),
-      children: const [
-        DescriptionSection(),
-        SizedBox(height: 20),
+      children: [
+        const DescriptionSection(),
+        const SizedBox(height: 20),
         SpecializationsSection(),
-        SizedBox(height: 20),
-        LocationSection(),
-        SizedBox(height: 20),
-        ReviewsSection(),
-        SizedBox(height: 20),
-        BookingSection(),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
+        const LocationSection(), // Properly defined below.
+        const SizedBox(height: 20),
+        const ReviewsSection(),
+        const SizedBox(height: 20),
+        const BookingSection(),
+        const SizedBox(height: 20),
       ],
     );
   }
@@ -264,7 +261,7 @@ class HeaderSection extends StatelessWidget {
             ),
           ),
         ),
-        // Top icons: share and favorite.
+        // Top row icons.
         Positioned(
           top: 40,
           left: 16,
@@ -291,7 +288,8 @@ class HeaderSection extends StatelessWidget {
                 child: CircleAvatar(
                   radius: 36,
                   backgroundImage: NetworkImage(
-                      'https://via.placeholder.com/150?text=Profile+Photo'),
+                    'https://via.placeholder.com/150?text=Profile+Photo',
+                  ),
                 ),
               ),
               const SizedBox(width: 16),
@@ -420,7 +418,6 @@ class SpecializationsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // List of additional services to be shown when "View More" is tapped.
     final List<String> additionalServices = [
       'Botox Treatment',
       'Dermal Fillers',
@@ -435,7 +432,8 @@ class SpecializationsSection extends StatelessWidget {
       showModalBottomSheet(
         context: context,
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
         builder: (BuildContext context) {
           return Padding(
             padding: const EdgeInsets.all(16),
@@ -506,6 +504,36 @@ class SpecializationsSection extends StatelessWidget {
   }
 }
 
+/// ---------------- Bronze Badge Widget ----------------
+class BronzeBadgeWidget extends StatelessWidget {
+  const BronzeBadgeWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.pink,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const CircleAvatar(
+            radius: 20,
+            backgroundImage: NetworkImage('https://via.placeholder.com/40?text=B'),
+          ),
+          const SizedBox(width: 8),
+          const Text(
+            'Bronze Badge Holder',
+            style: TextStyle(color: Colors.white, fontSize: 14),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 /// ---------------- Location Section ----------------
 class LocationSection extends StatelessWidget {
   const LocationSection({super.key});
@@ -545,20 +573,10 @@ class ReviewsSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.brown[200],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Text(
-                'Bronze Badge',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            const SizedBox(width: 16),
-            const Expanded(
+          children: const [
+            BronzeBadgeWidget(),
+            SizedBox(width: 16),
+            Expanded(
               child: Text(
                 '80% of visitors recommend consulting this doctor',
                 style: TextStyle(fontSize: 14),
