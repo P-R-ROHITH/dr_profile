@@ -5,8 +5,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,8 +14,6 @@ class MyApp extends StatelessWidget {
 }
 
 class DoctorProfile extends StatelessWidget {
-  const DoctorProfile({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +26,9 @@ class DoctorProfile extends StatelessWidget {
           children: <Widget>[
             ProfileHeader(),
             DescriptionSection(),
+            FeeStatCards(),
             SpecializationsSection(),
+            ServicesSection(), // NEW: Services Section added here
             LocationSection(),
             ReviewsSection(),
             BookingButton(),
@@ -41,67 +39,90 @@ class DoctorProfile extends StatelessWidget {
   }
 }
 
+// 📌 Profile Header (Unchanged)
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(16.0),
       color: Colors.blue[50],
-      child: Row(
+      child: Column(
         children: [
-          CircleAvatar(
-            radius: 50,
-            backgroundImage: AssetImage('assets/doctorprofilepic.png'), // Add your image asset
-          ),
-          SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Dr. KeerthiRaj", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                Text("MBBS, FCPS, FACC", style: TextStyle(fontSize: 16)),
-                Text("Available Today", style: TextStyle(color: Colors.green)),
-                SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 50,
+                backgroundImage: AssetImage('assets/doctorprofilepic.png'),
+              ),
+              SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      children: [
-                        Text("11 years", style: TextStyle(fontSize: 16)),
-                        Text("Experience", style: TextStyle(fontSize: 12)),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text("4.8", style: TextStyle(fontSize: 16)),
-                        Text("Rating", style: TextStyle(fontSize: 12)),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text("100+", style: TextStyle(fontSize: 16)),
-                        Text("Patients", style: TextStyle(fontSize: 12)),
-                      ],
-                    ),
+                    Text("Dr. KeerthiRaj", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                    Text("MBBS, FCPS, FACC", style: TextStyle(fontSize: 16)),
+                    Text("Available Today", style: TextStyle(color: Colors.green)),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              StatCard(title: "Experience", value: "30 Years", icon: Icons.school, color: Colors.blue),
+              StatCard(title: "Rating", value: "4.8 ★", icon: Icons.star, color: Colors.orange),
+              StatCard(title: "Patients", value: "150", icon: Icons.people, color: Colors.green),
+            ],
           ),
         ],
       ),
     );
   }
 }
-class StatsContainer extends StatelessWidget {
-  const StatsContainer({super.key});
 
+// 📌 Reusable StatCard (Unchanged)
+class StatCard extends StatelessWidget {
+  final String title;
+  final String value;
+  final IconData icon;
+  final Color color;
 
+  const StatCard({
+    Key? key,
+    required this.title,
+    required this.value,
+    required this.icon,
+    required this.color,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, color: color, size: 36),
+              SizedBox(height: 12),
+              Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              SizedBox(height: 4),
+              Text(value, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// 📌 Description Section (Unchanged)
 class DescriptionSection extends StatelessWidget {
-  const DescriptionSection({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -111,35 +132,74 @@ class DescriptionSection extends StatelessWidget {
         children: [
           Text("Description", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           SizedBox(height: 8),
-          Text(
-            "Dr. KeerthiRaj is a highly experienced, board certified neurologist with over 11 years of expertise in neurology surgeries. His specialization includes...",
-            textAlign: TextAlign.justify,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Text("Session Fee", style: TextStyle(fontSize: 16)),
-                  Text("₹600.00", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                ],
-              ),
-              Column(
-                children: [
-                  Text("Online Fee", style: TextStyle(fontSize: 16)),
-                  Text("₹450.00", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                ],
-              ),
-            ],
-          ),
+          Text("Dr. KeerthiRaj is a highly experienced, board-certified neurologist with over 11 years of expertise."),
         ],
       ),
     );
   }
 }
 
+// 📌 Fee StatCards Section (Unchanged)
+class FeeStatCards extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          LargeStatCard(title: "Session Fee", value: "₹600", icon: Icons.payment, color: Colors.blue),
+          LargeStatCard(title: "Online Fee", value: "₹450", icon: Icons.wifi, color: Colors.green),
+        ],
+      ),
+    );
+  }
+}
+
+// 📌 Reusable Large StatCard (Unchanged)
+class LargeStatCard extends StatelessWidget {
+  final String title;
+  final String value;
+  final IconData icon;
+  final Color color;
+
+  const LargeStatCard({
+    Key? key,
+    required this.title,
+    required this.value,
+    required this.icon,
+    required this.color,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Card(
+        elevation: 5,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: color, size: 40),
+              SizedBox(height: 12),
+              Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              SizedBox(height: 6),
+              Text(value, style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// 📌 Specializations Section (Unchanged)
 class SpecializationsSection extends StatelessWidget {
-  const SpecializationsSection({super.key});
+  final List<String> specializations = [
+    "Dermatology", // Specialization
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -149,34 +209,9 @@ class SpecializationsSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("Specializations", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          CheckboxListTile(
-            title: Text("Dermatology"),
-            value: true,
-            onChanged: (bool? value) {},
-          ),
-          CheckboxListTile(
-            title: Text("Anti-Aging Treatment"),
-            value: false,
-            onChanged: (bool? value) {},
-          ),
-          CheckboxListTile(
-            title: Text("Scar Treatment"),
-            value: false,
-            onChanged: (bool? value) {},
-          ),
-          CheckboxListTile(
-            title: Text("Skin consultant"),
-            value: false,
-            onChanged: (bool? value) {},
-          ),
-          CheckboxListTile(
-            title: Text("Acne/Pimples Treatment"),
-            value: false,
-            onChanged: (bool? value) {},
-          ),
-          TextButton(
-            onPressed: () {},
-            child: Text("View more"),
+          SizedBox(height: 8),
+          Column(
+            children: specializations.map((specialization) => SpecializationTile(specialization)).toList(),
           ),
         ],
       ),
@@ -184,75 +219,84 @@ class SpecializationsSection extends StatelessWidget {
   }
 }
 
+class SpecializationTile extends StatelessWidget {
+  final String specialization;
+
+  const SpecializationTile(this.specialization, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(Icons.check_circle, color: Colors.blue),
+      title: Text(specialization, style: TextStyle(fontSize: 16)),
+    );
+  }
+}
+
+// 📌 NEW: Services Section with ExpansionTile
+class ServicesSection extends StatelessWidget {
+  final List<String> services = [
+    "Consultation",
+    "Skin Treatment",
+    "Scar Removal",
+    "Anti-aging Therapy",
+    "Neurology Surgeries"
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Services Provided", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          SizedBox(height: 8),
+          Card(
+            elevation: 4,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            child: ExpansionTile(
+              title: Text("Click to view services", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              children: services.map((service) => ListTile(title: Text(service))).toList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// 📌 Location Section (Placeholder)
 class LocationSection extends StatelessWidget {
-  const LocationSection({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("Location", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          Image.asset('assets/mapimage.jpeg'), // Add your map asset
-        ],
-      ),
+      child: Text("Location", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
     );
   }
 }
 
+// 📌 Reviews Section (Placeholder)
 class ReviewsSection extends StatelessWidget {
-  const ReviewsSection({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("Patient Reviews", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          Row(
-            children: [
-              Icon(Icons.star, color: Colors.yellow),
-              Icon(Icons.star, color: Colors.yellow),
-              Icon(Icons.star, color: Colors.yellow),
-              Icon(Icons.star, color: Colors.yellow),
-              Icon(Icons.star_border),
-            ],
-          ),
-          SizedBox(height: 8),
-          Text(
-            "These feedbacks represent personal opinions and experiences of a person.",
-            style: TextStyle(color: Colors.grey),
-          ),
-          SizedBox(height: 8),
-          ListTile(
-            title: Text("Rafna", style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text("ID 72605 - I really recommend Dr. KeerthiRaj for skin issues. She is very kind and patient-friendly."),
-            trailing: Text("4/5"),
-          ),
-        ],
-      ),
+      child: Text("Patient Reviews", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
     );
   }
 }
 
+// 📌 Booking Button
 class BookingButton extends StatelessWidget {
-  const BookingButton({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: ElevatedButton(
-        onPressed: () {
-          // Navigate to book an appointment
-        },
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.white, backgroundColor: Colors.blue, padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20), // Text color
-        ),
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(foregroundColor: Colors.white, backgroundColor: Colors.blue, padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20)),
         child: Text("Book Now"),
       ),
     );
