@@ -177,28 +177,24 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Wrap the entire page in a SingleChildScrollView.
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // TopSection displays the cover image with curved corners and top icons.
-            const TopSection(),
-            // Profile picture directly below the TopSection
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+            Stack(
+              clipBehavior: Clip.none, // Allow overflow for the profile picture
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 16),
-                  child: CircleAvatar(
-                    radius: 100, // Diameter will be 200.
-                    backgroundColor: Colors.transparent,
-                    backgroundImage: AssetImage('assets/doctorprofilepic.png'),
-                  ),
+                const TopSection(),
+                // Add the ProfilePictureWidget here so it scrolls with the rest of the content
+                Positioned(
+                  top: 120, // Keep the current position
+                  right: -30, // Keep the current position
+                  child: const ProfilePictureWidget(),
                 ),
               ],
             ),
-            // "Neurologic" title immediately below profile pic.
+            const SizedBox(height: 200), // Add spacing to avoid overlap with the profile picture
             const Center(
               child: Text(
                 "Neurologic",
@@ -206,7 +202,7 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
               ),
             ),
             const SizedBox(height: 16),
-            const StatCardsSection(),
+            const StatCardsSection(), // Stat cards moved down
             const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -494,7 +490,8 @@ class BronzeBadgeWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: const [
           CircleAvatar(
-            radius: 20,
+            radius: 30,
+            backgroundColor: Colors.transparent,
             backgroundImage: AssetImage('assets/bronze badge png.png'),
           ),
           SizedBox(width: 8),
@@ -588,6 +585,24 @@ class BookingSection extends StatelessWidget {
       child: const Text(
         'Book Now',
         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+      ),
+    );
+  }
+}
+
+/// Profile picture widget.
+class ProfilePictureWidget extends StatelessWidget {
+  const ProfilePictureWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      radius: 130, // Adjust size as needed
+      backgroundColor: Colors.transparent,
+      child: CircleAvatar(
+        radius: 130, // Slightly smaller to create a border effect
+        backgroundColor: Colors.transparent,
+        backgroundImage: AssetImage('assets/doctorprofilepic.png'),
       ),
     );
   }
