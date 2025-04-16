@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// A custom segmented control that displays all options in one big pill-shaped oval.
+/// A custom segmented control that displays options in a big blue pill-shaped container.
 /// A white moving oval encapsulates the selected option.
 class PillTabBar extends StatefulWidget {
   final List<String> tabs;
@@ -49,18 +49,16 @@ class _PillTabBarState extends State<PillTabBar> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       double totalWidth = constraints.maxWidth;
-      // Divide available width evenly among tabs (subtracting a little margin).
-      double indicatorWidth = totalWidth / widget.tabs.length - 8;
+      double indicatorWidth = totalWidth / widget.tabs.length - 8; // Subtract a bit for margin.
 
       return Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: Colors.blue, // Big container is blue.
+          color: Colors.blue,
           borderRadius: BorderRadius.circular(30),
         ),
         child: Stack(
           children: [
-            // Animated white oval indicator under the selected tab.
             AnimatedAlign(
               alignment: _calculateAlignment(),
               duration: const Duration(milliseconds: 300),
@@ -74,7 +72,6 @@ class _PillTabBarState extends State<PillTabBar> {
                 ),
               ),
             ),
-            // Row of tap-able tab options.
             Row(
               children: List.generate(widget.tabs.length, (index) {
                 return Expanded(
@@ -106,11 +103,47 @@ class _PillTabBarState extends State<PillTabBar> {
     });
   }
 
-  /// Maps the selected index to an Alignment value.
   Alignment _calculateAlignment() {
     if (widget.tabs.length == 1) return Alignment.center;
     double x = -1.0 + (selectedIndex * 2 / (widget.tabs.length - 1));
     return Alignment(x, 0);
+  }
+}
+
+/// A widget to display the cover photo (with curved bottom corners) and top icons.
+class TopSection extends StatelessWidget {
+  const TopSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        bottomLeft: Radius.circular(20),
+        bottomRight: Radius.circular(20),
+      ),
+      child: Stack(
+        children: [
+          Image.asset(
+            'assets/coverpic.jpg',
+            height: 200,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+          Positioned(
+            top: 16,
+            left: 16,
+            right: 16,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Icon(Icons.share, color: Colors.white, size: 28),
+                Icon(Icons.favorite_border, color: Colors.white, size: 28),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -144,19 +177,34 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Wrap the entire page in a SingleChildScrollView so it is scrollable.
+      // Wrap the entire page in a SingleChildScrollView.
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Cover image at the very top using asset.
-            Image.asset(
-              'assets/coverpic.jpg',
-              height: 200,
-              width: double.infinity,
-              fit: BoxFit.cover,
+            // TopSection displays the cover image with curved corners and top icons.
+            const TopSection(),
+            // Profile picture directly below the TopSection
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: CircleAvatar(
+                    radius: 100, // Diameter will be 200.
+                    backgroundColor: Colors.transparent,
+                    backgroundImage: AssetImage('assets/doctorprofilepic.png'),
+                  ),
+                ),
+              ],
             ),
-            const HeaderSection(),
+            // "Neurologic" title immediately below profile pic.
+            const Center(
+              child: Text(
+                "Neurologic",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
             const SizedBox(height: 16),
             const StatCardsSection(),
             const SizedBox(height: 16),
@@ -199,7 +247,6 @@ class StatCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              // Using withAlpha instead of withOpacity to avoid precision loss.
               color: Colors.grey.withAlpha(77),
               blurRadius: 4,
               offset: const Offset(0, 2),
@@ -264,7 +311,7 @@ class AboutTabContent extends StatelessWidget {
   }
 }
 
-/// Placeholder widget for Availability tab content.
+/// Placeholder widget for the Availability tab.
 class AvailabilityTabContent extends StatelessWidget {
   const AvailabilityTabContent({super.key});
 
@@ -282,7 +329,7 @@ class AvailabilityTabContent extends StatelessWidget {
   }
 }
 
-/// Placeholder widget for Experience tab content.
+/// Placeholder widget for the Experience tab.
 class ExperienceTabContent extends StatelessWidget {
   const ExperienceTabContent({super.key});
 
@@ -300,7 +347,7 @@ class ExperienceTabContent extends StatelessWidget {
   }
 }
 
-/// Placeholder widget for Education tab content.
+/// Placeholder widget for the Education tab.
 class EducationTabContent extends StatelessWidget {
   const EducationTabContent({super.key});
 
@@ -314,105 +361,6 @@ class EducationTabContent extends StatelessWidget {
           style: TextStyle(fontSize: 18),
         ),
       ),
-    );
-  }
-}
-
-/// Header section using asset images.
-class HeaderSection extends StatelessWidget {
-  const HeaderSection({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        // Header background image from assets.
-        Container(
-          height: 250,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/header_bg.jpg'),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        // Top row icons.
-        Positioned(
-          top: 40,
-          left: 16,
-          right: 16,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Icon(Icons.share, color: Colors.white, size: 28),
-              Icon(Icons.favorite_border, color: Colors.white, size: 28),
-            ],
-          ),
-        ),
-        // Profile image and doctor details.
-        Positioned(
-          left: 16,
-          right: 16,
-          bottom: 16,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              CircleAvatar(
-                radius: 40,
-                backgroundColor: Colors.white,
-                child: CircleAvatar(
-                  radius: 36,
-                  // Using the doctor profile asset.
-                  backgroundImage: AssetImage('assets/doctorprofilepic.png'),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Dr. KeerthiRaj',
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                    Text(
-                      'Neurologist',
-                      style: TextStyle(fontSize: 16, color: Colors.white70),
-                    ),
-                    SizedBox(height: 4),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 8,
-                          height: 8,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.green),
-                          ),
-                        ),
-                        SizedBox(width: 4),
-                        Text('Available Today', style: TextStyle(fontSize: 14, color: Colors.white)),
-                      ],
-                    ),
-                    SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Icon(Icons.star, color: Colors.yellowAccent, size: 16),
-                        SizedBox(width: 4),
-                        Text('4.8', style: TextStyle(color: Colors.white, fontSize: 14)),
-                        SizedBox(width: 16),
-                        Text('11 yrs exp.', style: TextStyle(color: Colors.white, fontSize: 14)),
-                        SizedBox(width: 16),
-                        Text('100+ patients', style: TextStyle(color: Colors.white, fontSize: 14)),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }
@@ -431,7 +379,6 @@ class DescriptionSection extends StatelessWidget {
           style: TextStyle(fontSize: 16, color: Colors.black87),
         ),
         SizedBox(height: 12),
-        // Two statcards for fee details.
         Row(
           children: [
             StatCard(value: "₹600.00", label: "Session Fee"),
@@ -531,7 +478,7 @@ class SpecializationsSection extends StatelessWidget {
   }
 }
 
-/// Bronze badge widget using an asset image.
+/// Bronze badge widget using an asset image within a pink oval container.
 class BronzeBadgeWidget extends StatelessWidget {
   const BronzeBadgeWidget({super.key});
 
@@ -545,13 +492,13 @@ class BronzeBadgeWidget extends StatelessWidget {
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          const CircleAvatar(
+        children: const [
+          CircleAvatar(
             radius: 20,
             backgroundImage: AssetImage('assets/bronze badge png.png'),
           ),
-          const SizedBox(width: 8),
-          const Text('Bronze Badge Holder', style: TextStyle(color: Colors.white, fontSize: 14)),
+          SizedBox(width: 8),
+          Text('Bronze Badge Holder', style: TextStyle(fontSize: 14, color: Colors.white)),
         ],
       ),
     );
@@ -612,10 +559,7 @@ class ReviewsSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
-              Text(
-                'Rafna (ID: 72005)',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+              Text('Rafna (ID: 72005)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               SizedBox(height: 8),
               Text('Dr. KeerthiRaj provided exceptional care for my skin. I highly recommend him for anyone looking for a specialist in skin care.', style: TextStyle(fontSize: 14)),
             ],
@@ -634,7 +578,7 @@ class BookingSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        // Implement booking logic.
+        // Booking logic goes here.
       },
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(double.infinity, 50),
