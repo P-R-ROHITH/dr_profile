@@ -111,8 +111,15 @@ class _PillTabBarState extends State<PillTabBar> {
 }
 
 /// A widget to display the cover photo (with curved bottom corners) and top icons.
-class TopSection extends StatelessWidget {
+class TopSection extends StatefulWidget {
   const TopSection({super.key});
+
+  @override
+  State<TopSection> createState() => _TopSectionState();
+}
+
+class _TopSectionState extends State<TopSection> {
+  bool isFavorited = false; // Track the state of the favorites button
 
   @override
   Widget build(BuildContext context) {
@@ -129,15 +136,45 @@ class TopSection extends StatelessWidget {
             width: double.infinity,
             fit: BoxFit.cover,
           ),
+          // Back button
           Positioned(
             top: 16,
             left: 16,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white, size: 28),
+              onPressed: () {
+                Navigator.pop(context); // Navigate back when pressed
+              },
+            ),
+          ),
+          // Share and Favorites buttons
+          Positioned(
+            top: 16,
             right: 16,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Icon(Icons.share, color: Colors.white, size: 28),
-                Icon(Icons.favorite_border, color: Colors.white, size: 28),
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.share, color: Colors.white, size: 28),
+                  onPressed: () {
+                    // Add share functionality here
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Share button clicked!')),
+                    );
+                  },
+                ),
+                IconButton(
+                  icon: Icon(
+                    isFavorited ? Icons.favorite : Icons.favorite_border,
+                    color: isFavorited ? Colors.red : Colors.white,
+                    size: 28,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      isFavorited = !isFavorited; // Toggle the favorite state
+                    });
+                  },
+                ),
               ],
             ),
           ),
@@ -187,7 +224,7 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
               children: [
                 const TopSection(),
                 Positioned(
-                  top: 120, // Keep the current position
+                  top: 100, // Keep the current position
                   right: -30, // Keep the current position
                   child: const ProfilePictureWidget(),
                 ),
