@@ -731,20 +731,40 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                     ),
                   ],
                 ),
-                child: Column(
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      review['name']!,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    CircleAvatar(
+                      radius: 24, // Adjust size as needed
+                      backgroundImage: AssetImage('assets/profile_placeholder.png'), // Replace with actual profile picture
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      review['review']!,
-                      style: const TextStyle(fontSize: 14),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            review['name']!.split(' (')[0], // Extract name before ID
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            review['name']!.split(' (')[1].replaceAll(')', ''), // Extract ID
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            review['review']!,
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
