@@ -186,7 +186,6 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
               clipBehavior: Clip.none, // Allow overflow for the profile picture
               children: [
                 const TopSection(),
-                // Add the ProfilePictureWidget here so it scrolls with the rest of the content
                 Positioned(
                   top: 120, // Keep the current position
                   right: -30, // Keep the current position
@@ -194,11 +193,38 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
                 ),
               ],
             ),
-            const SizedBox(height: 200), // Add spacing to avoid overlap with the profile picture
-            const Center(
-              child: Text(
-                "Neurologic",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Neurologic",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    "Dr. Keerthi Raj",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    "MBBS, FCPS, FACC",
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      const Icon(Icons.circle, color: Colors.green, size: 12),
+                      const SizedBox(width: 8),
+                      const Text(
+                        "Available now",
+                        style: TextStyle(fontSize: 14, color: Colors.black),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 16),
@@ -243,7 +269,7 @@ class StatCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withAlpha(77),
+              color: const Color.fromRGBO(128, 128, 128, 0.2), // Updated to use Color.fromRGBO
               blurRadius: 4,
               offset: const Offset(0, 2),
             )
@@ -529,39 +555,203 @@ class LocationSection extends StatelessWidget {
 }
 
 /// Reviews section.
-class ReviewsSection extends StatelessWidget {
+class ReviewsSection extends StatefulWidget {
   const ReviewsSection({super.key});
 
   @override
+  State<ReviewsSection> createState() => _ReviewsSectionState();
+}
+
+class _ReviewsSectionState extends State<ReviewsSection> {
+  final List<Map<String, String>> reviews = [
+    {
+      'name': 'Rafna (ID: 72005)',
+      'review':
+      'Dr. KeerthiRaj provided exceptional care for my skin. I highly recommend him for anyone looking for a specialist in skin care.',
+    },
+    {
+      'name': 'Arjun (ID: 72006)',
+      'review':
+      'Dr. KeerthiRaj is an excellent neurologist. His diagnosis and treatment were spot on. Highly recommended!',
+    },
+    {
+      'name': 'Meera (ID: 72007)',
+      'review':
+      'Very professional and compassionate doctor. He listens to patients carefully and provides the best care.',
+    },
+  ];
+
+  final List<String> filters = [
+    'All',
+    'Recents',
+    'Positive',
+    'Negative',
+    'Detailed',
+    'Short',
+    'Verified',
+    'Unverified',
+    '5 Stars',
+    '4 Stars',
+    '3 Stars',
+    '2 Stars',
+    '1 Star'
+  ];
+
+  final Set<String> selectedFilters = {}; // Track selected filters
+
+  void toggleFilter(String filter) {
+    setState(() {
+      if (filter == 'All') {
+        // If "All" is selected, deselect all other filters
+        if (selectedFilters.contains('All')) {
+          selectedFilters.remove('All');
+        } else {
+          selectedFilters.clear();
+          selectedFilters.add('All');
+        }
+      } else {
+        // If any other filter is selected, deselect "All"
+        selectedFilters.remove('All');
+
+        // Prevent both "Positive" and "Negative" from being selected simultaneously
+        if (filter == 'Positive' && selectedFilters.contains('Negative')) {
+          selectedFilters.remove('Negative');
+        } else if (filter == 'Negative' && selectedFilters.contains('Positive')) {
+          selectedFilters.remove('Positive');
+        }
+
+        // Toggle the selected filter
+        if (selectedFilters.contains(filter)) {
+          selectedFilters.remove(filter);
+        } else {
+          selectedFilters.add(filter);
+        }
+      }
+    });
+  }
+
+  void showMoreFilters() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'More Filters',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 12),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: filters.skip(3).map((filter) {
+                  final isSelected = selectedFilters.contains(filter);
+                  return ChoiceChip(
+                    label: Text(filter),
+                    selected: isSelected,
+                    onSelected: (_) {
+                      toggleFilter(filter);
+                      Navigator.pop(context); // Close the modal after selection
+                    },
+                    selectedColor: Colors.blue[100],
+                    backgroundColor: Colors.grey[200],
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final displayedFilters = filters.take(3).toList(); // Always show the first 3 filters
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const Text(
+          'Reviews',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        const Text(
+          'Showing reviews for:',
+          style: TextStyle(fontSize: 16, color: Colors.black54),
+        ),
+        const SizedBox(height: 8),
         Row(
-          children: const [
-            BronzeBadgeWidget(),
-            SizedBox(width: 16),
-            Expanded(
-              child: Text('80% of visitors recommend consulting this doctor', style: TextStyle(fontSize: 14)),
+          children: [
+            Wrap(
+              spacing: 8,
+              children: displayedFilters.map((filter) {
+                final isSelected = selectedFilters.contains(filter);
+                return ChoiceChip(
+                  label: Text(filter),
+                  selected: isSelected,
+                  onSelected: (_) => toggleFilter(filter),
+                  selectedColor: Colors.blue[100],
+                  backgroundColor: Colors.grey[200],
+                );
+              }).toList(),
+            ),
+            TextButton(
+              onPressed: showMoreFilters,
+              child: const Text('View More'),
             ),
           ],
         ),
         const SizedBox(height: 16),
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(12),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: reviews.map((review) {
+              return Container(
+                width: 300, // Adjust width as needed
+                margin: const EdgeInsets.only(right: 16),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.lightBlue[50], // Apply light blue background color
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color.fromRGBO(128, 128, 128, 0.2),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      review['name']!,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      review['review']!,
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text('Rafna (ID: 72005)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
-              Text('Dr. KeerthiRaj provided exceptional care for my skin. I highly recommend him for anyone looking for a specialist in skin care.', style: TextStyle(fontSize: 14)),
-            ],
-          ),
-        )
+        ),
       ],
     );
   }
@@ -597,10 +787,10 @@ class ProfilePictureWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      radius: 130, // Adjust size as needed
+      radius: 150, // Adjust size as needed
       backgroundColor: Colors.transparent,
       child: CircleAvatar(
-        radius: 130, // Slightly smaller to create a border effect
+        radius: 150, // Slightly smaller to create a border effect
         backgroundColor: Colors.transparent,
         backgroundImage: AssetImage('assets/doctorprofilepic.png'),
       ),
