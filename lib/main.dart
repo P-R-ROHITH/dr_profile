@@ -1153,14 +1153,26 @@ class TabContentWidget extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(16),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Hospital name and map icon
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Flexible(
+                    // Hospital image
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        image: const DecorationImage(
+                          image: AssetImage('assets/sp medifort hosp.jpg'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    // Hospital name and address
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -1179,84 +1191,137 @@ class TabContentWidget extends StatelessWidget {
                               color: Colors.grey[600],
                             ),
                           ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Container(
+                                width: 10,
+                                height: 10,
+                                decoration: const BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              const Text(
+                                "Offline",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
-                    const Icon(
-                      Icons.map,
-                      color: Colors.blueAccent,
-                      size: 30,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Container(
+                          width: 45, // Reduced from 50 to 45
+                          height: 45, // Reduced from 50 to 45
+                          margin: const EdgeInsets.only(left: 8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            image: const DecorationImage(
+                              image: AssetImage('assets/mapimage.jpeg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          "3 KM",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
-                // Status and Distance
-                Row(
-                  children: [
-                    Container(
-                      width: 10,
-                      height: 10,
-                      decoration: const BoxDecoration(
-                        color: Colors.green,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    const Text(
-                      "Online",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const Spacer(),
-                    const Text(
-                      "3.0KM",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                // Weekday timing
-                Row(
-                  children: [
-                    Icon(
-                      Icons.access_time,
-                      size: 16,
-                      color: Colors.grey[700],
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      "09:00AM - 06:00PM",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[700],
-                      ),
-                    ),
-                  ],
+                const SizedBox(height: 16),
+                const Text(
+                  "Timing:",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black87,
+                  ),
                 ),
                 const SizedBox(height: 8),
-                // Weekend timing
                 Row(
                   children: [
-                    Container(
-                      width: 10,
-                      height: 10,
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
+                    // Left column with MON-FRI and timing
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "MON - FRI",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.access_time,
+                              size: 16,
+                              color: Colors.grey[700],
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              "09:00AM - 06:00PM",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 6),
-                    Text(
-                      "Not Available",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[700],
-                      ),
+                    const SizedBox(width: 48),
+                    // Right column with SAT-SUN and Not Available
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "SAT - SUN",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Container(
+                              width: 10,
+                              height: 10,
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              "Not Available",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -1264,28 +1329,30 @@ class TabContentWidget extends StatelessWidget {
                   height: 20,
                   thickness: 1,
                 ),
-                // View Calendar link
-                InkWell(
-                  onTap: () {
-                    // Add calendar view functionality here
-                  },
-                  child: Row(
-                    children: const [
-                      Icon(
-                        Icons.calendar_today,
-                        size: 16,
-                        color: Colors.blue,
-                      ),
-                      SizedBox(width: 6),
-                      Text(
-                        "View Calendar",
-                        style: TextStyle(
-                          fontSize: 14,
+                Center(
+                  child: InkWell(
+                    onTap: () {
+                      // Add calendar view functionality here
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Icon(
+                          Icons.calendar_today,
+                          size: 16,
                           color: Colors.blue,
-                          decoration: TextDecoration.underline,
                         ),
-                      )
-                    ],
+                        SizedBox(width: 6),
+                        Text(
+                          "View Calendar",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -1311,7 +1378,7 @@ class TabContentWidget extends StatelessWidget {
                   employmentType: "Full-time",
                   duration: "2020 - Present • 4 yrs",
                   location: "Bangalore, Karnataka, India",
-                  imageAsset: "assets/hospital_building.png",
+                  imageAsset: "assets/hospital 1.png",
                 ),
                 SizedBox(height: 8),
                 JobListingCard(
@@ -1320,7 +1387,7 @@ class TabContentWidget extends StatelessWidget {
                   employmentType: "Full-time",
                   duration: "2015 - 2020 • 5 yrs",
                   location: "Bangalore, Karnataka, India",
-                  imageAsset: "assets/hospital_building.png",
+                  imageAsset: "assets/hospital 2.png",
                 ),
                 SizedBox(height: 8),
                 JobListingCard(
@@ -1329,7 +1396,7 @@ class TabContentWidget extends StatelessWidget {
                   employmentType: "Full-time",
                   duration: "2012 - 2015 • 3 yrs",
                   location: "Bangalore, Karnataka, India",
-                  imageAsset: "assets/hospital_building.png",
+                  imageAsset: "assets/hospital 3.png",
                 ),
               ],
             ),
@@ -1349,7 +1416,7 @@ class TabContentWidget extends StatelessWidget {
               collegeName: "BANGALORE MEDICAL COLLEGE",
               degree: "MBBS, Medicine",
               duration: "2010 - 2012",
-              imageAsset: "assets/hospital_building.png",
+              imageAsset: "assets/hospital 1.png",
             ),
             const SizedBox(height: 12),
             // Second Education Card
@@ -1357,7 +1424,7 @@ class TabContentWidget extends StatelessWidget {
               collegeName: "AIIMS DELHI",
               degree: "FCPS - Neurology",
               duration: "2013 - 2015",
-              imageAsset: "assets/hospital_building.png",
+              imageAsset: "assets/hospital 2.png",
             ),
             const SizedBox(height: 12),
             // Third Education Card
@@ -1365,7 +1432,7 @@ class TabContentWidget extends StatelessWidget {
               collegeName: "AMERICAN COLLEGE OF CARDIOLOGY",
               degree: "FACC",
               duration: "2016 - 2017",
-              imageAsset: "assets/hospital_building.png",
+              imageAsset: "assets/hospital 3.png",
             ),
           ],
         );
