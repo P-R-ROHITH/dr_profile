@@ -215,73 +215,76 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // TopSection displays the cover image with curved corners and top icons.
-            Stack(
-              clipBehavior: Clip.none, // Allow overflow for the profile picture
-              children: [
-                const TopSection(),
-                Positioned(
-                  top: 100, // Keep the current position
-                  right: -30, // Keep the current position
-                  child: const ProfilePictureWidget(),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12), // Reduced width by increasing horizontal padding
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // TopSection displays the cover image with curved corners and top icons.
+              Stack(
+                clipBehavior: Clip.none, // Allow overflow for the profile picture
                 children: [
-                  const Text(
-                    "Neurologic",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    "Dr. Keerthi Raj",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    "MBBS, FCPS, FACC",
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      const Icon(Icons.circle, color: Colors.green, size: 12),
-                      const SizedBox(width: 8),
-                      const Text(
-                        "Available now",
-                        style: TextStyle(fontSize: 14, color: Colors.black),
-                      ),
-                    ],
+                  const TopSection(),
+                  Positioned(
+                    top: 100, // Keep the current position
+                    right: -30, // Keep the current position
+                    child: const ProfilePictureWidget(),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 16),
-            const StatCardsSection(), // Stat cards moved down
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: PillTabBar(
-                tabs: _tabs,
-                initialIndex: _selectedTab,
-                onTabChanged: (index) {
-                  setState(() {
-                    _selectedTab = index;
-                  });
-                },
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Neurologic",
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      "Dr. Keerthi Raj",
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      "MBBS, FCPS, FACC",
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        const Icon(Icons.circle, color: Colors.green, size: 12),
+                        const SizedBox(width: 8),
+                        const Text(
+                          "Available now",
+                          style: TextStyle(fontSize: 14, color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            _buildTabContent(),
-          ],
+              const SizedBox(height: 16),
+              const StatCardsSection(), // Stat cards moved down
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: PillTabBar(
+                  tabs: _tabs,
+                  initialIndex: _selectedTab,
+                  onTabChanged: (index) {
+                    setState(() {
+                      _selectedTab = index;
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(height: 16),
+              _buildTabContent(),
+            ],
+          ),
         ),
       ),
     );
@@ -292,8 +295,18 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
 class StatCard extends StatelessWidget {
   final String value;
   final String label;
+  final String? imagePath;
+  final double? imageTop;
+  final double? imageRight;
 
-  const StatCard({super.key, required this.value, required this.label});
+  const StatCard({
+    super.key,
+    required this.value,
+    required this.label,
+    this.imagePath,
+    this.imageTop,
+    this.imageRight,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -312,17 +325,32 @@ class StatCard extends StatelessWidget {
             )
           ],
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: Stack(
           children: [
-            Text(
-              value,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+            if (imagePath != null)
+              Positioned(
+                top: imageTop ?? 0,
+                right: imageRight ?? 0,
+                child: Image.asset(
+                  imagePath!,
+                  height: 40,
+                  width: 40,
+                ),
+              ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 8),
+                Text(
+                  value,
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  label,
+                  style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                ),
+              ],
             ),
           ],
         ),
@@ -339,9 +367,27 @@ class StatCardsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: const [
-        StatCard(value: "11 yrs", label: "Experience"),
-        StatCard(value: "4.8", label: "Rating"),
-        StatCard(value: "100+", label: "Patients"),
+        StatCard(
+          value: "11 yrs",
+          label: "Experience",
+          imagePath: 'assets/suitcase.png', // Replace with your image path
+          imageTop: -10, // Adjust the vertical position
+          imageRight: 20 , // Adjust the horizontal position
+        ),
+        StatCard(
+          value: "4.8",
+          label: "Rating",
+          imagePath: 'assets/star png.png', // Replace with your image path
+          imageTop: -10,
+          imageRight: 20,
+        ),
+        StatCard(
+          value: "100+",
+          label: "Patients",
+          imagePath: 'assets/patients png.png', // Replace with your image path
+          imageTop: -10,
+          imageRight: 20,
+        ),
       ],
     );
   }
@@ -440,8 +486,16 @@ class DescriptionSection extends StatelessWidget {
         SizedBox(height: 12),
         Row(
           children: [
-            StatCard(value: "₹600.00", label: "Session Fee"),
-            StatCard(value: "₹450.00", label: "Online Fee"),
+            StatCard(value: "₹600.00",
+                imagePath: 'assets/rupee png (1).png',
+                imageTop: -10,
+                imageRight: 50,
+                label: "Session Fee"),
+            StatCard(value: "₹450.00",
+                imagePath: 'assets/doctor png.png',
+                imageTop: -10,
+                imageRight: 50,
+                label: "Online Fee"),
           ],
         )
       ],
@@ -463,8 +517,12 @@ class SpecializationsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> additionalServices = [
+      'Anti-Aging Treatment',
+      'Scar Treatment',
       'Botox Treatment',
-      'Dermal Fillers',
+      'Skin Consultant',
+      'Acne/Pimples Treatment'
+          'Dermal Fillers',
       'Laser Hair Removal',
       'Chemical Peel',
       'Pulsed Dye Laser Therapy',
@@ -773,7 +831,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                   children: [
                     CircleAvatar(
                       radius: 24, // Adjust size as needed
-                      backgroundImage: AssetImage('assets/profile_placeholder.png'), // Replace with actual profile picture
+                      backgroundImage: AssetImage('assets/patients png.png'), // Replace with actual profile picture
                     ),
                     const SizedBox(width: 12),
                     Expanded(
