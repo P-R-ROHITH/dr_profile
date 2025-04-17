@@ -47,60 +47,62 @@ class _PillTabBarState extends State<PillTabBar> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      double totalWidth = constraints.maxWidth;
-      double indicatorWidth = totalWidth / widget.tabs.length - 8; // Subtract a bit for margin.
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double totalWidth = constraints.maxWidth;
+        double indicatorWidth = totalWidth / widget.tabs.length - 8;
 
-      return Container(
-        padding: const EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Stack(
-          children: [
-            AnimatedAlign(
-              alignment: _calculateAlignment(),
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-              child: Container(
-                width: indicatorWidth,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
+        return Container(
+          padding: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Stack(
+            children: [
+              AnimatedAlign(
+                alignment: _calculateAlignment(),
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                child: Container(
+                  width: indicatorWidth,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
               ),
-            ),
-            Row(
-              children: List.generate(widget.tabs.length, (index) {
-                return Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedIndex = index;
-                      });
-                      widget.onTabChanged?.call(index);
-                    },
-                    child: Container(
-                      height: 40,
-                      alignment: Alignment.center,
-                      child: Text(
-                        widget.tabs[index],
-                        style: TextStyle(
-                          color: selectedIndex == index ? Colors.blue : Colors.white,
-                          fontWeight: selectedIndex == index ? FontWeight.bold : FontWeight.normal,
+              Row(
+                children: List.generate(widget.tabs.length, (index) {
+                  return Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedIndex = index;
+                        });
+                        widget.onTabChanged?.call(index);
+                      },
+                      child: Container(
+                        height: 40,
+                        alignment: Alignment.center,
+                        child: Text(
+                          widget.tabs[index],
+                          style: TextStyle(
+                            color: selectedIndex == index ? Colors.blue : Colors.white,
+                            fontWeight: selectedIndex == index ? FontWeight.bold : FontWeight.normal,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              }),
-            ),
-          ],
-        ),
-      );
-    });
+                  );
+                }),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Alignment _calculateAlignment() {
@@ -1158,21 +1160,155 @@ class TabContentWidget extends StatelessWidget {
           ],
         );
       case 'Availability':
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildTimeSlot('Monday - Saturday', '10:00 AM - 7:00 PM'),
-            _buildTimeSlot('Sunday', 'Closed'),
-            const SizedBox(height: 24),
-            const Text(
-              'Break Time',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        return Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Hospital name and map icon
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "SP Medifort Hospital",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            "Airport road, Eanchakkal",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(
+                      Icons.map,
+                      color: Colors.blueAccent,
+                      size: 30,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                // Status and Distance
+                Row(
+                  children: [
+                    Container(
+                      width: 10,
+                      height: 10,
+                      decoration: const BoxDecoration(
+                        color: Colors.green,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    const Text(
+                      "Online",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const Spacer(),
+                    const Text(
+                      "3.0KM",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                // Weekday timing
+                Row(
+                  children: [
+                    Icon(
+                      Icons.access_time,
+                      size: 16,
+                      color: Colors.grey[700],
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      "09:00AM - 06:00PM",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                // Weekend timing
+                Row(
+                  children: [
+                    Container(
+                      width: 10,
+                      height: 10,
+                      decoration: const BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      "Not Available",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ],
+                ),
+                const Divider(
+                  height: 20,
+                  thickness: 1,
+                ),
+                // View Calendar link
+                InkWell(
+                  onTap: () {
+                    // Add calendar view functionality here
+                  },
+                  child: Row(
+                    children: const [
+                      Icon(
+                        Icons.calendar_today,
+                        size: 16,
+                        color: Colors.blue,
+                      ),
+                      SizedBox(width: 6),
+                      Text(
+                        "View Calendar",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const BookingSection(),
+              ],
             ),
-            const SizedBox(height: 16),
-            _buildTimeSlot('Lunch Break', '1:00 PM - 2:00 PM'),
-            const SizedBox(height: 20),
-            const BookingSection(),
-          ],
+          ),
         );
       case 'Experience':
         return Padding(
@@ -1241,42 +1377,6 @@ class TabContentWidget extends StatelessWidget {
     }
   }
 
-  Widget _buildTimeSlot(String day, String time) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[300]!),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            day,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          Row(
-            children: [
-              Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
-              const SizedBox(width: 4),
-              Text(
-                time,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget _buildExperienceItem(String period, String role, String hospital) {
     return Container(
