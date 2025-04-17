@@ -196,21 +196,6 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
   int _selectedTab = 0;
   final List<String> _tabs = ['About', 'Availability', 'Experience', 'Education'];
 
-  Widget _buildTabContent() {
-    switch (_selectedTab) {
-      case 0:
-        return const AboutTabContent();
-      case 1:
-        return const AvailabilityTabContent();
-      case 2:
-        return const ExperienceTabContent();
-      case 3:
-        return const EducationTabContent();
-      default:
-        return const AboutTabContent();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -280,7 +265,7 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
               ),
             ),
             // Review section without padding
-            _buildTabContent(),
+            TabContentWidget(selectedTab: _tabs[_selectedTab]),
           ],
         ),
       ),
@@ -1063,6 +1048,306 @@ class ProfilePictureWidget extends StatelessWidget {
         radius: 150, // Slightly smaller to create a border effect
         backgroundColor: Colors.transparent,
         backgroundImage: AssetImage('assets/doctorprofilepic.png'),
+      ),
+    );
+  }
+}
+
+/// Widget for displaying tab content with description and icon.
+class TabContentWidget extends StatelessWidget {
+  final String selectedTab;
+
+  const TabContentWidget({
+    super.key,
+    required this.selectedTab,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Tab description row
+              Row(
+                children: [
+                  Icon(
+                    _getTabIcon(),
+                    size: 16,
+                    color: Colors.grey[600],
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    _getTabDescription(),
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              // Dynamic tab content
+              _buildTabContent(),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
+        // Static sections that remain unchanged
+        const SpecializationsSection(),
+        const SizedBox(height: 20),
+        const LocationSection(),
+        const SizedBox(height: 20),
+        const ReviewsSection(),
+        const SizedBox(height: 20),
+        const BookingSection(),
+      ],
+    );
+  }
+
+  IconData _getTabIcon() {
+    switch (selectedTab) {
+      case 'About':
+        return Icons.info_outline;
+      case 'Availability':
+        return Icons.access_time;
+      case 'Experience':
+        return Icons.work_outline;
+      case 'Education':
+        return Icons.school_outlined;
+      default:
+        return Icons.info_outline;
+    }
+  }
+
+  String _getTabDescription() {
+    switch (selectedTab) {
+      case 'About':
+        return 'General information and reviews';
+      case 'Availability':
+        return 'Available on Mon-Sat • 10:00 AM - 7:00 PM';
+      case 'Experience':
+        return '11 years of experience • 100+ patients';
+      case 'Education':
+        return 'MBBS, FCPS, FACC • Multiple certifications';
+      default:
+        return '';
+    }
+  }
+
+  Widget _buildTabContent() {
+    switch (selectedTab) {
+      case 'About':
+        return const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DescriptionSection(),
+            SizedBox(height: 20),
+            SpecializationsSection(),
+            SizedBox(height: 20),
+            LocationSection(),
+            SizedBox(height: 20),
+            ReviewsSection(),
+            SizedBox(height: 20),
+            BookingSection(),
+          ],
+        );
+      case 'Availability':
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildTimeSlot('Monday - Saturday', '10:00 AM - 7:00 PM'),
+            _buildTimeSlot('Sunday', 'Closed'),
+            const SizedBox(height: 24),
+            const Text(
+              'Break Time',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            _buildTimeSlot('Lunch Break', '1:00 PM - 2:00 PM'),
+            const SizedBox(height: 20),
+            const BookingSection(),
+          ],
+        );
+      case 'Experience':
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Work Experience',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              _buildExperienceItem(
+                '2020 - Present',
+                'Senior Neurologist',
+                'Apollo Hospitals, Bangalore',
+              ),
+              _buildExperienceItem(
+                '2015 - 2020',
+                'Consultant Neurologist',
+                'Columbia Asia Hospital, Bangalore',
+              ),
+              _buildExperienceItem(
+                '2012 - 2015',
+                'Junior Neurologist',
+                'Manipal Hospitals, Bangalore',
+              ),
+              const SizedBox(height: 20),
+              const BookingSection(),
+            ],
+          ),
+        );
+      case 'Education':
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Education & Qualifications',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              _buildEducationItem(
+                '2012',
+                'MBBS',
+                'Bangalore Medical College',
+              ),
+              _buildEducationItem(
+                '2015',
+                'FCPS - Neurology',
+                'AIIMS Delhi',
+              ),
+              _buildEducationItem(
+                '2017',
+                'FACC',
+                'American College of Cardiology',
+              ),
+              const SizedBox(height: 20),
+              const BookingSection(),
+            ],
+          ),
+        );
+      default:
+        return const SizedBox.shrink();
+    }
+  }
+
+  Widget _buildTimeSlot(String day, String time) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey[300]!),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            day,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          Row(
+            children: [
+              Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
+              const SizedBox(width: 4),
+              Text(
+                time,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[600],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildExperienceItem(String period, String role, String hospital) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey[300]!),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            period,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            role,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            hospital,
+            style: const TextStyle(fontSize: 14),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEducationItem(String year, String degree, String institution) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey[300]!),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            year,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            degree,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            institution,
+            style: const TextStyle(fontSize: 14),
+          ),
+        ],
       ),
     );
   }
