@@ -384,18 +384,43 @@ class AboutTabContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const DescriptionSection(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildTabContent(),
+            ],
+          ),
+        ),
         const SizedBox(height: 20),
+        // Static sections that remain unchanged
         const SpecializationsSection(),
         const SizedBox(height: 20),
         const LocationSection(),
         const SizedBox(height: 20),
-        // Move ReviewsSection here
         const ReviewsSection(),
         const SizedBox(height: 20),
-        const BookingSection(), // Book Now button remains at the bottom
-        const SizedBox(height: 20),
+        const BookingSection(),
+      ],
+    );
+  }
+
+  Widget _buildTabContent() {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        DescriptionSection(),
+        SizedBox(height: 20),
+        SpecializationsSection(),
+        SizedBox(height: 20),
+        LocationSection(),
+        SizedBox(height: 20),
+        ReviewsSection(),
+        SizedBox(height: 20),
+        BookingSection(),
       ],
     );
   }
@@ -496,14 +521,32 @@ class DescriptionSection extends StatelessWidget {
 }
 
 /// Specializations section.
-class SpecializationsSection extends StatelessWidget {
+class SpecializationsSection extends StatefulWidget {
   const SpecializationsSection({super.key});
+
+  @override
+  State<SpecializationsSection> createState() => _SpecializationsSectionState();
+}
+
+class _SpecializationsSectionState extends State<SpecializationsSection> {
+  bool showAllServices = false;
 
   final List<String> services = const [
     'Anti-Aging Treatment',
     'Scar Treatment',
     'Skin Consultant',
-    'Acne/Pimples Treatment'
+    'Acne/Pimples Treatment',
+    'Neurological Disorders',
+    'Stroke Treatment',
+    'Headache Management',
+    'Movement Disorders',
+    'Epilepsy Treatment',
+    'Sleep Disorders',
+    'Multiple Sclerosis',
+    'Brain Tumor Treatment',
+    'Spine Disorders',
+    'Memory Loss Treatment',
+    'Parkinson\'s Disease'
   ];
 
   @override
@@ -531,27 +574,33 @@ class SpecializationsSection extends StatelessWidget {
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: services
-                .map((service) => Chip(
-              label: Text(service),
-              backgroundColor: Colors.grey[200],
-            ))
-                .toList(),
+            children: [
+              ...List.generate(
+                showAllServices ? services.length : 4,
+                    (index) => Chip(
+                  label: Text(services[index]),
+                  backgroundColor: Colors.grey[200],
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 16),
           Center(
             child: TextButton(
-              onPressed: showMoreOptions,
-              child: const Text('View More'),
+              onPressed: () {
+                setState(() {
+                  showAllServices = !showAllServices;
+                });
+              },
+              child: Text(
+                showAllServices ? 'Show Less' : 'View More',
+                style: const TextStyle(color: Colors.blue),
+              ),
             ),
           ),
         ],
       ),
     );
-  }
-
-  void showMoreOptions() {
-    // Implementation for showing more options
   }
 }
 
@@ -1071,33 +1120,7 @@ class TabContentWidget extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Tab description row
-              Row(
-                children: [
-                  Icon(
-                    _getTabIcon(),
-                    size: 16,
-                    color: Colors.grey[600],
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    _getTabDescription(),
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.grey[600],
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              // Dynamic tab content
-              _buildTabContent(),
-            ],
-          ),
+          child: _buildTabContent(),
         ),
         const SizedBox(height: 20),
         // Static sections that remain unchanged
@@ -1107,39 +1130,8 @@ class TabContentWidget extends StatelessWidget {
         const SizedBox(height: 20),
         const ReviewsSection(),
         const SizedBox(height: 20),
-        const BookingSection(),
       ],
     );
-  }
-
-  IconData _getTabIcon() {
-    switch (selectedTab) {
-      case 'About':
-        return Icons.info_outline;
-      case 'Availability':
-        return Icons.access_time;
-      case 'Experience':
-        return Icons.work_outline;
-      case 'Education':
-        return Icons.school_outlined;
-      default:
-        return Icons.info_outline;
-    }
-  }
-
-  String _getTabDescription() {
-    switch (selectedTab) {
-      case 'About':
-        return 'General information and reviews';
-      case 'Availability':
-        return 'Available on Mon-Sat • 10:00 AM - 7:00 PM';
-      case 'Experience':
-        return '11 years of experience • 100+ patients';
-      case 'Education':
-        return 'MBBS, FCPS, FACC • Multiple certifications';
-      default:
-        return '';
-    }
   }
 
   Widget _buildTabContent() {
@@ -1149,14 +1141,6 @@ class TabContentWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DescriptionSection(),
-            SizedBox(height: 20),
-            SpecializationsSection(),
-            SizedBox(height: 20),
-            LocationSection(),
-            SizedBox(height: 20),
-            ReviewsSection(),
-            SizedBox(height: 20),
-            BookingSection(),
           ],
         );
       case 'Availability':
@@ -1304,148 +1288,339 @@ class TabContentWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
-                const BookingSection(),
               ],
             ),
           ),
         );
       case 'Experience':
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Work Experience',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 16),
-              _buildExperienceItem(
-                '2020 - Present',
-                'Senior Neurologist',
-                'Apollo Hospitals, Bangalore',
-              ),
-              _buildExperienceItem(
-                '2015 - 2020',
-                'Consultant Neurologist',
-                'Columbia Asia Hospital, Bangalore',
-              ),
-              _buildExperienceItem(
-                '2012 - 2015',
-                'Junior Neurologist',
-                'Manipal Hospitals, Bangalore',
-              ),
-              const SizedBox(height: 20),
-              const BookingSection(),
-            ],
-          ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Work Experience',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: const [
+                JobListingCard(
+                  jobTitle: "Senior Neurologist",
+                  institution: "Apollo Hospitals",
+                  employmentType: "Full-time",
+                  duration: "2020 - Present • 4 yrs",
+                  location: "Bangalore, Karnataka, India",
+                  imageAsset: "assets/hospital_building.png",
+                ),
+                SizedBox(height: 8),
+                JobListingCard(
+                  jobTitle: "Consultant Neurologist",
+                  institution: "Columbia Asia Hospital",
+                  employmentType: "Full-time",
+                  duration: "2015 - 2020 • 5 yrs",
+                  location: "Bangalore, Karnataka, India",
+                  imageAsset: "assets/hospital_building.png",
+                ),
+                SizedBox(height: 8),
+                JobListingCard(
+                  jobTitle: "Junior Neurologist",
+                  institution: "Manipal Hospitals",
+                  employmentType: "Full-time",
+                  duration: "2012 - 2015 • 3 yrs",
+                  location: "Bangalore, Karnataka, India",
+                  imageAsset: "assets/hospital_building.png",
+                ),
+              ],
+            ),
+          ],
         );
       case 'Education':
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Education & Qualifications',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 16),
-              _buildEducationItem(
-                '2012',
-                'MBBS',
-                'Bangalore Medical College',
-              ),
-              _buildEducationItem(
-                '2015',
-                'FCPS - Neurology',
-                'AIIMS Delhi',
-              ),
-              _buildEducationItem(
-                '2017',
-                'FACC',
-                'American College of Cardiology',
-              ),
-              const SizedBox(height: 20),
-              const BookingSection(),
-            ],
-          ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Education & Qualifications',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            // First Education Card
+            EducationMilestoneCard(
+              collegeName: "BANGALORE MEDICAL COLLEGE",
+              degree: "MBBS, Medicine",
+              duration: "2010 - 2012",
+              imageAsset: "assets/hospital_building.png",
+            ),
+            const SizedBox(height: 12),
+            // Second Education Card
+            EducationMilestoneCard(
+              collegeName: "AIIMS DELHI",
+              degree: "FCPS - Neurology",
+              duration: "2013 - 2015",
+              imageAsset: "assets/hospital_building.png",
+            ),
+            const SizedBox(height: 12),
+            // Third Education Card
+            EducationMilestoneCard(
+              collegeName: "AMERICAN COLLEGE OF CARDIOLOGY",
+              degree: "FACC",
+              duration: "2016 - 2017",
+              imageAsset: "assets/hospital_building.png",
+            ),
+          ],
         );
       default:
         return const SizedBox.shrink();
     }
   }
+}
 
+/// Job listing card widget.
+class JobListingCard extends StatelessWidget {
+  final String jobTitle;
+  final String institution;
+  final String employmentType;
+  final String duration;
+  final String location;
+  final String imageAsset;
 
-  Widget _buildExperienceItem(String period, String role, String hospital) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[300]!),
+  const JobListingCard({
+    super.key,
+    required this.jobTitle,
+    required this.institution,
+    required this.employmentType,
+    required this.duration,
+    required this.location,
+    required this.imageAsset,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            period,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[600],
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                image: DecorationImage(
+                  image: AssetImage(imageAsset),
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            role,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            hospital,
-            style: const TextStyle(fontSize: 14),
-          ),
-        ],
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    jobTitle,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    institution,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Icon(Icons.work, size: 16, color: Colors.grey[600]),
+                      const SizedBox(width: 4),
+                      Text(
+                        employmentType,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
+                      const SizedBox(width: 4),
+                      Text(
+                        duration,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(Icons.location_on, size: 16, color: Colors.grey[600]),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          location,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
+}
 
-  Widget _buildEducationItem(String year, String degree, String institution) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
+/// Education milestone card widget.
+class EducationMilestoneCard extends StatelessWidget {
+  final String collegeName;
+  final String degree;
+  final String duration;
+  final String imageAsset;
+
+  const EducationMilestoneCard({
+    super.key,
+    required this.collegeName,
+    required this.degree,
+    required this.duration,
+    required this.imageAsset,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 3,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[300]!),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: const [
+                Icon(Icons.school, color: Colors.blue),
+                SizedBox(width: 8),
+                Text(
+                  "COMPLETED",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const TimelineIndicator(height: 120),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 100,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          image: DecorationImage(
+                            image: AssetImage(imageAsset),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        collegeName,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        degree,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        duration,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Timeline indicator widget.
+class TimelineIndicator extends StatelessWidget {
+  final double height;
+  const TimelineIndicator({super.key, this.height = 100});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 20,
+      height: height,
+      child: Stack(
+        alignment: Alignment.center,
         children: [
-          Text(
-            year,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[600],
+          Positioned(
+            top: 0,
+            bottom: 0,
+            left: 9,
+            child: Container(
+              width: 2,
+              color: Colors.grey.shade300,
             ),
           ),
-          const SizedBox(height: 8),
-          Text(
-            degree,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+          Positioned(
+            top: height / 2 - 6,
+            left: 4,
+            child: Container(
+              width: 12,
+              height: 12,
+              decoration: const BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.circle,
+              ),
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            institution,
-            style: const TextStyle(fontSize: 14),
           ),
         ],
       ),
