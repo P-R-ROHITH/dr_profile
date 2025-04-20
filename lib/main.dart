@@ -672,7 +672,7 @@ class _DescriptionSectionState extends State<DescriptionSection> {
   }
 }
 
-/// Specializations section.
+/// Specializations Section
 class SpecializationsSection extends StatefulWidget {
   const SpecializationsSection({super.key});
 
@@ -703,34 +703,35 @@ class _SpecializationsSectionState extends State<SpecializationsSection> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      color: Colors.lightBlue[50], // Light blue background for the specialization section
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-              'Specializations',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+            'Specializations',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Row(
             children: [
               const Icon(
-                Icons.local_hospital, // You can replace this with a more specific icon
+                Icons.local_hospital,
                 size: 20,
                 color: Colors.blue,
               ),
               const SizedBox(width: 8),
               const Text(
-                  'Dermatology',
-                  style: TextStyle(fontSize: 16)
+                'Dermatology',
+                style: TextStyle(fontSize: 16),
               ),
             ],
           ),
           const SizedBox(height: 16),
           const Text(
-              'Services Offered',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+            'Services Offered',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Wrap(
@@ -739,7 +740,7 @@ class _SpecializationsSectionState extends State<SpecializationsSection> {
             children: [
               ...List.generate(
                 showAllServices ? services.length : 4,
-                    (index) => Chip(
+                (index) => Chip(
                   label: Text(services[index]),
                   backgroundColor: Colors.grey[200],
                 ),
@@ -819,14 +820,15 @@ class LocationSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+    return Container(
+      color: Colors.lightBlue[50], // Light blue background for the location section
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-              'Location',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+            'Location',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Container(
@@ -838,7 +840,7 @@ class LocationSection extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-          )
+          ),
         ],
       ),
     );
