@@ -829,7 +829,7 @@ class LocationSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.lightBlue[50], // Light blue background for the location section
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16), // Removed vertical padding
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -837,7 +837,7 @@ class LocationSection extends StatelessWidget {
             'Location',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 8), // Minimal spacing for readability
           Container(
             height: 200,
             decoration: BoxDecoration(
@@ -1292,11 +1292,14 @@ class TabContentWidget extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           // Static sections
-          const SpecializationsSection(),
-          const SizedBox(height: 20),
-          const LocationSection(),
-          const SizedBox(height: 20),
-          const ReviewsSection(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SpecializationsSection(),
+              const LocationSection(), // No extra spacing added here
+              const ReviewsSection(),
+            ],
+          ),
         ],
       ),
     );
