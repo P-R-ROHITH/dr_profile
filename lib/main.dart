@@ -59,7 +59,7 @@ class _PillTabBarState extends State<PillTabBar> {
         return Container(
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
-            color: Colors.blue,
+            color: Colors.grey[300], // Grey background for the pill
             borderRadius: BorderRadius.circular(30),
           ),
           child: Stack(
@@ -72,7 +72,7 @@ class _PillTabBarState extends State<PillTabBar> {
                   width: indicatorWidth,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.white, // White background for the selected tab
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
@@ -93,8 +93,12 @@ class _PillTabBarState extends State<PillTabBar> {
                         child: Text(
                           widget.tabs[index],
                           style: TextStyle(
-                            color: selectedIndex == index ? Colors.blue : Colors.white,
-                            fontWeight: selectedIndex == index ? FontWeight.bold : FontWeight.normal,
+                            color: selectedIndex == index
+                                ? Colors.blue // Blue for the selected tab
+                                : Colors.black, // Black for unselected tabs
+                            fontWeight: selectedIndex == index
+                                ? FontWeight.bold
+                                : FontWeight.normal,
                           ),
                         ),
                       ),
