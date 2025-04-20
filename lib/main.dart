@@ -1572,7 +1572,6 @@ class TabContentWidget extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            // First Education Card
             EducationMilestoneCard(
               collegeName: "BANGALORE MEDICAL COLLEGE",
               degree: "MBBS, Medicine",
@@ -1580,7 +1579,6 @@ class TabContentWidget extends StatelessWidget {
               imageAsset: "assets/hospital 1.png",
             ),
             const SizedBox(height: 12),
-            // Second Education Card
             EducationMilestoneCard(
               collegeName: "AIIMS DELHI",
               degree: "FCPS - Neurology",
@@ -1588,7 +1586,6 @@ class TabContentWidget extends StatelessWidget {
               imageAsset: "assets/hospital 2.png",
             ),
             const SizedBox(height: 12),
-            // Third Education Card
             EducationMilestoneCard(
               collegeName: "AMERICAN COLLEGE OF CARDIOLOGY",
               degree: "FACC",
@@ -1744,71 +1741,70 @@ class EducationMilestoneCard extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: const [
-                Icon(Icons.school, color: Colors.blue),
-                SizedBox(width: 8),
-                Text(
-                  "COMPLETED",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                  ),
+            // Timeline indicator
+            const TimelineIndicator(height: 120),
+            const SizedBox(width: 12),
+            // Image on the left
+            Container(
+              width: 80, // Adjust the width as needed
+              height: 80, // Adjust the height as needed
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                image: DecorationImage(
+                  image: AssetImage(imageAsset),
+                  fit: BoxFit.cover,
                 ),
-              ],
+              ),
             ),
-            const SizedBox(height: 16),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const TimelineIndicator(height: 120),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          image: DecorationImage(
-                            image: AssetImage(imageAsset),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
+            const SizedBox(width: 12), // Spacing between image and text
+            // Text on the right
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: const [
+                      Icon(Icons.school, color: Colors.blue),
+                      SizedBox(width: 8),
                       Text(
-                        collegeName,
-                        style: const TextStyle(
-                          fontSize: 16,
+                        "COMPLETED",
+                        style: TextStyle(
                           fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        degree,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[700],
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        duration,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey[600],
+                          color: Colors.blue,
                         ),
                       ),
                     ],
                   ),
-                )
-              ],
-            )
+                  const SizedBox(height: 8),
+                  Text(
+                    collegeName,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    degree,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    duration,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
