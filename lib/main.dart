@@ -234,14 +234,43 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 16),
-                        const Text(
-                          "Neurologic",
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        Row(
+                          children: [
+                            Container(
+                              width: 24,
+                              height: 24,
+                              decoration: BoxDecoration(
+                                color: Colors.blue.withOpacity(0.2), // Semi-transparent blue background
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.blue.withOpacity(0.4), // Blur effect
+                                    blurRadius: 8,
+                                    spreadRadius: 2,
+                                  ),
+                                ],
+                              ),
+                              child: const Icon(
+                                Icons.add,
+                                color: Colors.blue,
+                                size: 16, // Adjust size as needed
+                              ),
+                            ),
+                            const SizedBox(width: 8), // Add spacing between the icon and text
+                            const Text(
+                              "Neurologic",
+                              style: TextStyle(
+                                fontSize: 14, // Made the text smaller
+                                fontWeight: FontWeight.normal, // Lighter font weight
+                                color: Colors.grey, // Lighter color
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 8),
                         const Text(
                           "Dr. Keerthi Raj",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 4),
                         const Text(
@@ -301,17 +330,18 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
       ),
       // Fixed "Book Now" button at the bottom
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 24), // Increased bottom padding to raise the button
         child: ElevatedButton(
           onPressed: () {
             // Add booking functionality here
           },
           style: ElevatedButton.styleFrom(
             minimumSize: const Size(double.infinity, 56),
-            backgroundColor: Colors.blue,
+            backgroundColor: Colors.blue, // Button color
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
+            elevation: 0, // Remove shadow for a cleaner look
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -543,40 +573,71 @@ class EducationTabContent extends StatelessWidget {
   }
 }
 
-/// Description section with fee statcards.
-class DescriptionSection extends StatelessWidget {
+/// Description section with a "Read More" button.
+class DescriptionSection extends StatefulWidget {
   const DescriptionSection({super.key});
 
   @override
+  State<DescriptionSection> createState() => _DescriptionSectionState();
+}
+
+class _DescriptionSectionState extends State<DescriptionSection> {
+  bool isExpanded = false;
+
+  @override
   Widget build(BuildContext context) {
+    const fullDescription =
+        'Dr. KeerthiRaj is renowned for his expertise in neurology surgeries with a patient-centered approach. '
+        'With over 11 years of experience, he delivers innovative care and compassionate consultation to all his patients. '
+        'He specializes in treating neurological disorders, stroke management, and brain surgeries.';
+    const truncatedDescription =
+        'Dr. KeerthiRaj is renowned for his expertise in neurology surgeries with a patient-centered approach. '
+        'With over 11 years of experience...';
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children: [
           Text(
-            'Dr. KeerthiRaj is renowned for his expertise in neurology surgeries with a patient-centered approach. With over 11 years of experience, he delivers innovative care and compassionate consultation to all his patients.',
-            style: TextStyle(fontSize: 16, color: Colors.black87),
+            isExpanded ? fullDescription : truncatedDescription,
+            style: const TextStyle(fontSize: 16, color: Colors.black87),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 8),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                isExpanded = !isExpanded;
+              });
+            },
+            child: Text(
+              isExpanded ? 'Read Less' : 'Read More',
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.blue,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
           Row(
-            children: [
+            children: const [
               StatCard(
-                  value: "₹600.00",
-                  imagePath: 'assets/rupee png (1).png',
-                  imageTop: -10,
-                  imageRight: 50,
-                  label: "Session Fee"
+                value: "₹600.00",
+                imagePath: 'assets/rupee png (1).png',
+                imageTop: -10,
+                imageRight: 50,
+                label: "Session Fee",
               ),
               StatCard(
-                  value: "₹450.00",
-                  imagePath: 'assets/doctor png.png',
-                  imageTop: -10,
-                  imageRight: 50,
-                  label: "Online Fee"
+                value: "₹450.00",
+                imagePath: 'assets/doctor png.png',
+                imageTop: -10,
+                imageRight: 50,
+                label: "Online Fee",
               ),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -1218,7 +1279,7 @@ class TabContentWidget extends StatelessWidget {
           const SizedBox(height: 20),
           const ReviewsSection(),
           const SizedBox(height: 20),
-          // Removed the "Book Now" button here
+          // Removed the "Book Now" button below reviews
         ],
       ),
     );
@@ -1245,7 +1306,206 @@ class TabContentWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Availability content here...
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Hospital image
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        image: const DecorationImage(
+                          image: AssetImage('assets/sp medifort hosp.jpg'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    // Hospital name and address
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "SP Medifort Hospital",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            "Airport road, Eanchakkal",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Container(
+                                width: 10,
+                                height: 10,
+                                decoration: const BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              const Text(
+                                "Offline",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Container(
+                          width: 45, // Reduced from 50 to 45
+                          height: 45, // Reduced from 50 to 45
+                          margin: const EdgeInsets.only(left: 8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            image: const DecorationImage(
+                              image: AssetImage('assets/mapimage.jpeg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          "3 KM",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  "Timing:",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    // Left column with MON-FRI and timing
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "MON - FRI",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.access_time,
+                              size: 16,
+                              color: Colors.grey[700],
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              "09:00AM - 06:00PM",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 48),
+                    // Right column with SAT-SUN and Not Available
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "SAT - SUN",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Container(
+                              width: 10,
+                              height: 10,
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              "Not Available",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const Divider(
+                  height: 20,
+                  thickness: 1,
+                ),
+                Center(
+                  child: InkWell(
+                    onTap: () {
+                      // Add calendar view functionality here
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Icon(
+                          Icons.calendar_today,
+                          size: 16,
+                          color: Colors.blue,
+                        ),
+                        SizedBox(width: 6),
+                        Text(
+                          "View Calendar",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
