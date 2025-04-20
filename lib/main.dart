@@ -230,9 +230,9 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // White background section
+            // Profile Section
             Container(
-              color: Colors.white,
+              color: Colors.lightBlue[50], // Light blue background for the profile section
               child: Column(
                 children: [
                   Stack(
@@ -274,13 +274,13 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
                                 size: 16, // Adjust size as needed
                               ),
                             ),
-                            const SizedBox(width: 8), // Add spacing between the icon and text
+                            const SizedBox(width: 8),
                             const Text(
                               "Neurologic",
                               style: TextStyle(
-                                fontSize: 14, // Made the text smaller
-                                fontWeight: FontWeight.normal, // Lighter font weight
-                                color: Colors.grey, // Lighter color
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.grey,
                               ),
                             ),
                           ],
