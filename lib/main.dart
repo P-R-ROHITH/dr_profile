@@ -321,25 +321,16 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
               ),
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 16),
-                        PillTabBar(
-                          tabs: _tabs,
-                          initialIndex: _selectedTab,
-                          onTabChanged: (index) {
-                            setState(() {
-                              _selectedTab = index;
-                            });
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                      ],
-                    ),
+                  TabContentWidget(
+                    selectedTab: _tabs[_selectedTab],
+                    tabs: _tabs,
+                    initialIndex: _selectedTab,
+                    onTabChanged: (index) {
+                      setState(() {
+                        _selectedTab = index;
+                      });
+                    },
                   ),
-                  TabContentWidget(selectedTab: _tabs[_selectedTab]),
                 ],
               ),
             ),
@@ -1236,10 +1227,16 @@ class ProfilePictureWidget extends StatelessWidget {
 /// Widget for displaying tab content with description and icon.
 class TabContentWidget extends StatelessWidget {
   final String selectedTab;
+  final List<String> tabs;
+  final int initialIndex;
+  final ValueChanged<int>? onTabChanged;
 
   const TabContentWidget({
     super.key,
     required this.selectedTab,
+    required this.tabs,
+    this.initialIndex = 0,
+    this.onTabChanged,
   });
 
   @override
@@ -1262,6 +1259,17 @@ class TabContentWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Big Oval Container (PillTabBar)
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: PillTabBar(
+              tabs: tabs,
+              initialIndex: initialIndex,
+              onTabChanged: onTabChanged,
+            ),
+          ),
+          const SizedBox(height: 20),
+          // Tab Content
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: _buildTabContent(),
@@ -1273,8 +1281,6 @@ class TabContentWidget extends StatelessWidget {
           const LocationSection(),
           const SizedBox(height: 20),
           const ReviewsSection(),
-          const SizedBox(height: 20),
-          // Removed the "Book Now" button below reviews
         ],
       ),
     );
