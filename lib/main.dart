@@ -146,44 +146,62 @@ class _TopSectionState extends State<TopSection> {
             width: double.infinity,
             fit: BoxFit.cover,
           ),
-          // Back button - moved down
+          // Back button
           Positioned(
-            top: 40, // Changed from 16 to 40
+            top: 40,
             left: 16,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white, size: 28),
-              onPressed: () {
-                Navigator.pop(context); // Navigate back when pressed
-              },
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white, // White background
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.grey, size: 24), // Grey icon
+                onPressed: () {
+                  Navigator.pop(context); // Navigate back when pressed
+                },
+              ),
             ),
           ),
-          // Share and Favorites buttons - moved down
+          // Share and Favorites buttons
           Positioned(
-            top: 40, // Changed from 16 to 40
+            top: 40,
             right: 16,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                IconButton(
-                  icon: const Icon(Icons.share, color: Colors.white, size: 28),
-                  onPressed: () {
-                    // Add share functionality here
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Share button clicked!')),
-                    );
-                  },
-                ),
-                IconButton(
-                  icon: Icon(
-                    isFavorited ? Icons.favorite : Icons.favorite_border,
-                    color: isFavorited ? Colors.red : Colors.white,
-                    size: 28,
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white, // White background
+                    shape: BoxShape.circle,
                   ),
-                  onPressed: () {
-                    setState(() {
-                      isFavorited = !isFavorited; // Toggle the favorite state
-                    });
-                  },
+                  child: IconButton(
+                    icon: const Icon(Icons.share, color: Colors.grey, size: 24), // Grey icon
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Share button clicked!')),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white, // White background
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: Icon(
+                      isFavorited ? Icons.favorite : Icons.favorite_border,
+                      color: isFavorited ? Colors.red : Colors.grey, // Grey or red icon
+                      size: 24,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isFavorited = !isFavorited; // Toggle the favorite state
+                      });
+                    },
+                  ),
                 ),
               ],
             ),
@@ -240,11 +258,11 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
                               width: 24,
                               height: 24,
                               decoration: BoxDecoration(
-                                color: Colors.blue.withOpacity(0.2), // Semi-transparent blue background
+                                color: Colors.blue.withAlpha(51), // Semi-transparent blue background
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.blue.withOpacity(0.4), // Blur effect
+                                    color: Colors.blue.withAlpha(102), // Blur effect
                                     blurRadius: 8,
                                     spreadRadius: 2,
                                   ),
