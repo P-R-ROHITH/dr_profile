@@ -390,16 +390,16 @@ class StatCard extends StatelessWidget {
     return Expanded(
       child: Container(
         margin: const EdgeInsets.all(4),
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8), // Reduced padding
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: const Color.fromRGBO(128, 128, 128, 0.2), // Updated to use Color.fromRGBO
+              color: const Color.fromRGBO(128, 128, 128, 0.2),
               blurRadius: 4,
               offset: const Offset(0, 2),
-            )
+            ),
           ],
         ),
         child: Stack(
@@ -414,20 +414,30 @@ class StatCard extends StatelessWidget {
                   width: 40,
                 ),
               ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 8),
-                Text(
-                  value,
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  label,
-                  style: TextStyle(fontSize: 14, color: Colors.grey[700]),
-                ),
-              ],
+            Align(
+              alignment: Alignment.bottomLeft, // Align content to the bottom-left
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
+                children: [
+                  Text(
+                    value,
+                    style: const TextStyle(
+                      fontSize: 14, // Smaller font size
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 2), // Reduced spacing
+                  Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: 12, // Smaller font size
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
