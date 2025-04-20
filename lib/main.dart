@@ -860,17 +860,17 @@ class _ReviewsSectionState extends State<ReviewsSection> {
     {
       'name': 'Rafna (ID: 72005)',
       'review': 'Dr. KeerthiRaj provided exceptional care for my skin. I highly recommend him for anyone looking for a specialist in skin care.',
-      'rating': 5, // Added rating
+      'rating': 5,
     },
     {
       'name': 'Arjun (ID: 72006)',
       'review': 'Dr. KeerthiRaj is an excellent neurologist. His diagnosis and treatment were spot on. Highly recommended!',
-      'rating': 4, // Added rating
+      'rating': 4,
     },
     {
       'name': 'Meera (ID: 72007)',
       'review': 'Very professional and compassionate doctor. He listens to patients carefully and provides the best care.',
-      'rating': 5, // Added rating
+      'rating': 5,
     },
   ];
 
@@ -893,102 +893,77 @@ class _ReviewsSectionState extends State<ReviewsSection> {
   Widget build(BuildContext context) {
     final PageController pageController = PageController(viewportFraction: 0.75);
 
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
+    return Container(
+      color: Colors.lightBlue[50], // Light blue background for the review section
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Patient Reviews',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 4),
-                const Row(
-                  children: [
-                    Icon(Icons.star, color: Colors.amber, size: 16),
-                    Icon(Icons.star, color: Colors.amber, size: 16),
-                    Icon(Icons.star, color: Colors.amber, size: 16),
-                    Icon(Icons.star, color: Colors.amber, size: 16),
-                    Icon(Icons.star, color: Colors.amber, size: 16),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                const Text(
-                  'These feedbacks represent personal opinions and experiences of a person.',
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Increased padding
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFE4E9),
-                        borderRadius: const BorderRadius.all(Radius.circular(30)),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CircleAvatar(
-                            radius: 25, // Increased from 16 to 20
-                            backgroundColor: Colors.transparent,
-                            backgroundImage: AssetImage('assets/bronze badge png.png'),
-                          ),
-                          const SizedBox(width: 12),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                'Bronze Badge',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF757575),
-                                ),
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                'Holder',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF757575),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 12), // Increased spacing
-                    Container(
-                      height: 32,
-                      width: 1,
-                      color: Colors.grey[400],
-                    ),
-                    const SizedBox(width: 12), // Increased spacing
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8), // Added vertical padding
-                        child: Text(
-                          '• About 80% of patients recommended consulting this doctor',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+          const Text(
+            'Patient Reviews',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'These feedbacks represent personal opinions and experiences of a person.',
+            style: TextStyle(fontSize: 12, color: Colors.grey),
           ),
           const SizedBox(height: 16),
+          // Bronze Badge Section
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFE4E9),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Row(
+                  children: [
+                    const CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: AssetImage('assets/bronze badge png.png'),
+                    ),
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          'Bronze Badge',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF757575),
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          'Holder',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF757575),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  '• About 80% of patients recommended consulting this doctor',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          // Filter Section
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
@@ -1008,7 +983,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                   children: [
                     ...List.generate(
                       showAllFilters ? allFilters.length : initialVisibleFilters,
-                          (index) => _buildFilterChip(allFilters[index], allFilters[index] == selectedFilter),
+                      (index) => _buildFilterChip(allFilters[index], allFilters[index] == selectedFilter),
                     ),
                     if (!showAllFilters)
                       GestureDetector(
@@ -1065,6 +1040,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
             ),
           ),
           const SizedBox(height: 16),
+          // Review Boxes
           SizedBox(
             height: 220,
             child: PageView.builder(
@@ -1092,7 +1068,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                     margin: const EdgeInsets.symmetric(horizontal: 4),
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.lightBlue[50],
+                      color: Colors.blue[100], // Blue background for the review boxes
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
@@ -1102,62 +1078,51 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                         ),
                       ],
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 24,
-                                backgroundImage: AssetImage('assets/patients png.png'),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            const CircleAvatar(
+                              radius: 24,
+                              backgroundImage: AssetImage('assets/patients png.png'),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    reviews[index]['name']!,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    children: List.generate(
+                                      5,
+                                      (starIndex) => Icon(
+                                        (reviews[index]['rating'] ?? 0) > starIndex
+                                            ? Icons.star
+                                            : Icons.star_border,
+                                        color: Colors.amber,
+                                        size: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      reviews[index]['name']!.split(' (')[0],
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      reviews[index]['name']!.split(' (')[1].replaceAll(')', ''),
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Row(
-                                      children: List.generate(
-                                        5,
-                                            (starIndex) => Icon(
-                                          (reviews[index]['rating'] ?? 0) > starIndex
-                                              ? Icons.star
-                                              : Icons.star_border,
-                                          color: Colors.amber,
-                                          size: 14,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            reviews[index]['review']!,
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          reviews[index]['review']!,
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ],
                     ),
                   ),
                 );
@@ -1180,16 +1145,16 @@ class _ReviewsSectionState extends State<ReviewsSection> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue : Colors.grey[200],
+          color: isSelected ? Colors.black : Colors.grey[200], // Black background for selected filters
           borderRadius: BorderRadius.circular(20),
           border: isSelected
-              ? Border.all(color: Colors.blue, width: 1)
+              ? Border.all(color: Colors.black, width: 1) // Black border for selected filters
               : Border.all(color: Colors.grey[300]!, width: 1),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.white : Colors.grey[600],
+            color: isSelected ? Colors.white : Colors.grey[600], // White text for selected filters
             fontSize: 12,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),
@@ -1201,19 +1166,19 @@ class _ReviewsSectionState extends State<ReviewsSection> {
   void filterReviews(String filter) {
     switch (filter) {
       case 'Recent':
-      // Sort reviews by date
+        // Sort reviews by date
         break;
       case 'Critical':
-      // Filter negative reviews
+        // Filter negative reviews
         break;
       case 'Positive':
-      // Filter positive reviews
+        // Filter positive reviews
         break;
       case 'With Photos':
-      // Filter reviews with photos
+        // Filter reviews with photos
         break;
       default:
-      // Show all reviews
+        // Show all reviews
         break;
     }
   }
