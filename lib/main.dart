@@ -694,66 +694,82 @@ class _SpecializationsSectionState extends State<SpecializationsSection> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.lightBlue[50], // Light blue background for the specialization section
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Specializations',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    return Column(
+      children: [
+        // Gradient Widget Above Specialization Section
+        Container(
+          height: 50, // Adjust height as needed
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.white, Color(0xFFE3F2FD)], // White to light blue gradient
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
           ),
-          const SizedBox(height: 8),
-          Row(
+        ),
+        // Specialization Section
+        Container(
+          color: Colors.lightBlue[50], // Light blue background for the specialization section
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(
-                Icons.local_hospital,
-                size: 20,
-                color: Colors.blue,
-              ),
-              const SizedBox(width: 8),
               const Text(
-                'Dermatology',
-                style: TextStyle(fontSize: 16),
+                'Specializations',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          const Text(
-            'Services Offered',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              ...List.generate(
-                showAllServices ? services.length : 4,
-                (index) => Chip(
-                  label: Text(services[index]),
-                  backgroundColor: Colors.grey[200],
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.local_hospital,
+                    size: 20,
+                    color: Colors.blue,
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
+                    'Dermatology',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Services Offered',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  ...List.generate(
+                    showAllServices ? services.length : 4,
+                    (index) => Chip(
+                      label: Text(services[index]),
+                      backgroundColor: Colors.grey[200],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: TextButton(
+                  onPressed: () {
+                    setState(() {
+                      showAllServices = !showAllServices;
+                    });
+                  },
+                  child: Text(
+                    showAllServices ? 'Show Less' : 'View More',
+                    style: const TextStyle(color: Colors.blue),
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          Center(
-            child: TextButton(
-              onPressed: () {
-                setState(() {
-                  showAllServices = !showAllServices;
-                });
-              },
-              child: Text(
-                showAllServices ? 'Show Less' : 'View More',
-                style: const TextStyle(color: Colors.blue),
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
