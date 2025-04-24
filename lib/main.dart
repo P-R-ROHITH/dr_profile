@@ -433,16 +433,16 @@ class StatCard extends StatelessWidget {
                   Text(
                     value,
                     style: const TextStyle(
-                      fontSize: 12, // Smaller font size
+                      fontSize: 16, // Increased font size for the value
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
                   ),
-                  const SizedBox(height: 2), // Reduced spacing
+                  const SizedBox(height: 4), // Adjusted spacing
                   Text(
                     label,
                     style: TextStyle(
-                      fontSize: 10, // Smaller font size
+                      fontSize: 12, // Increased font size for the label
                       color: Colors.grey[700],
                     ),
                   ),
@@ -476,14 +476,14 @@ class StatCardsSection extends StatelessWidget {
           label: "Rating",
           imagePath: 'assets/star png.png',
           imageTop: -10,
-          imageRight: 5,
+          imageRight: 0,
         ),
         StatCard(
           value: "100+",
           label: "Patients",
           imagePath: 'assets/patients png.png',
           imageTop: -10,
-          imageRight: 5,
+          imageRight: 0,
         ),
       ],
     );
@@ -645,14 +645,14 @@ class _DescriptionSectionState extends State<DescriptionSection> {
               StatCard(
                 value: "₹600.00",
                 imagePath: 'assets/rupee png (1).png',
-                imageTop: -10,
+                imageTop: -15,
                 imageRight: 100,
                 label: "Session Fee",
               ),
               StatCard(
                 value: "---",
                 imagePath: 'assets/doctor png.png',
-                imageTop: -10,
+                imageTop: -15,
                 imageRight: 100,
                 label: "Online Fee",
               ),
