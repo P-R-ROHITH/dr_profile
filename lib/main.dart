@@ -1099,14 +1099,25 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  // Name
                                   Text(
-                                    reviews[index]['name']!,
+                                    reviews[index]['name']!.split(' (')[0], // Extract name
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   const SizedBox(height: 4),
+                                  // ID Number
+                                  Text(
+                                    reviews[index]['name']!.split(' (')[1].replaceAll(')', ''), // Extract ID
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  // Star Rating
                                   Row(
                                     children: List.generate(
                                       5,
