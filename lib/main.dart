@@ -398,8 +398,9 @@ class StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
+        height: 80, // Increased height for the stat card
         margin: const EdgeInsets.all(4),
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8), // Reduced padding
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
@@ -419,8 +420,8 @@ class StatCard extends StatelessWidget {
                 right: imageRight ?? 0,
                 child: Image.asset(
                   imagePath!,
-                  height: 40,
-                  width: 40,
+                  height: 30, // Adjusted height
+                  width: 30,  // Adjusted width
                 ),
               ),
             Align(
@@ -432,7 +433,7 @@ class StatCard extends StatelessWidget {
                   Text(
                     value,
                     style: const TextStyle(
-                      fontSize: 14, // Smaller font size
+                      fontSize: 12, // Smaller font size
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
@@ -441,7 +442,7 @@ class StatCard extends StatelessWidget {
                   Text(
                     label,
                     style: TextStyle(
-                      fontSize: 12, // Smaller font size
+                      fontSize: 10, // Smaller font size
                       color: Colors.grey[700],
                     ),
                   ),
@@ -466,21 +467,21 @@ class StatCardsSection extends StatelessWidget {
         StatCard(
           value: "11 yrs",
           label: "Experience",
-          imagePath: 'assets/suitcase.png', // Replace with your image path
-          imageTop: -10, // Adjust the vertical position
-          imageRight: 20 , // Adjust the horizontal position
+          imagePath: 'assets/suitcase.png',
+          imageTop: -10,
+          imageRight: 20,
         ),
         StatCard(
           value: "4.8",
           label: "Rating",
-          imagePath: 'assets/star png.png', // Replace with your image path
+          imagePath: 'assets/star png.png',
           imageTop: -10,
           imageRight: 20,
         ),
         StatCard(
           value: "100+",
           label: "Patients",
-          imagePath: 'assets/patients png.png', // Replace with your image path
+          imagePath: 'assets/patients png.png',
           imageTop: -10,
           imageRight: 20,
         ),
@@ -649,7 +650,7 @@ class _DescriptionSectionState extends State<DescriptionSection> {
                 label: "Session Fee",
               ),
               StatCard(
-                value: "₹450.00",
+                value: "---",
                 imagePath: 'assets/doctor png.png',
                 imageTop: -10,
                 imageRight: 50,
