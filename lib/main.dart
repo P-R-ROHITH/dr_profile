@@ -398,7 +398,7 @@ class StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        height: 80, // Increased height for the stat card
+        height: 80, // Adjust height as needed
         margin: const EdgeInsets.all(4),
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
         decoration: BoxDecoration(
@@ -420,8 +420,8 @@ class StatCard extends StatelessWidget {
                 right: imageRight ?? 0,
                 child: Image.asset(
                   imagePath!,
-                  height: 30, // Adjusted height
-                  width: 30,  // Adjusted width
+                  height: 45, // 1.5 times the original height (30 * 1.5)
+                  width: 45,  // 1.5 times the original width (30 * 1.5)
                 ),
               ),
             Align(
@@ -469,21 +469,21 @@ class StatCardsSection extends StatelessWidget {
           label: "Experience",
           imagePath: 'assets/suitcase.png',
           imageTop: -10,
-          imageRight: 20,
+          imageRight: 5,
         ),
         StatCard(
           value: "4.8",
           label: "Rating",
           imagePath: 'assets/star png.png',
           imageTop: -10,
-          imageRight: 20,
+          imageRight: 5,
         ),
         StatCard(
           value: "100+",
           label: "Patients",
           imagePath: 'assets/patients png.png',
           imageTop: -10,
-          imageRight: 20,
+          imageRight: 5,
         ),
       ],
     );
@@ -646,14 +646,14 @@ class _DescriptionSectionState extends State<DescriptionSection> {
                 value: "₹600.00",
                 imagePath: 'assets/rupee png (1).png',
                 imageTop: -10,
-                imageRight: 50,
+                imageRight: 100,
                 label: "Session Fee",
               ),
               StatCard(
                 value: "---",
                 imagePath: 'assets/doctor png.png',
                 imageTop: -10,
-                imageRight: 50,
+                imageRight: 100,
                 label: "Online Fee",
               ),
             ],
