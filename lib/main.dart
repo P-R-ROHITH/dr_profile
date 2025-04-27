@@ -384,6 +384,7 @@ class StatCard extends StatelessWidget {
   final String? imagePath;
   final double? imageTop;
   final double? imageRight;
+  final double height;
 
   const StatCard({
     super.key,
@@ -392,13 +393,27 @@ class StatCard extends StatelessWidget {
     this.imagePath,
     this.imageTop,
     this.imageRight,
+    this.height = 85, // Default height with new optional parameter
   });
 
   @override
   Widget build(BuildContext context) {
+    Color getShadowColor() {
+      switch (label) {
+        case "Experience":
+          return Colors.orange.withOpacity(0.2);
+        case "Rating":
+          return Colors.amber.withOpacity(0.2);
+        case "Patients":
+          return Colors.green.withOpacity(0.2);
+        default:
+          return Colors.grey.withOpacity(0.2);
+      }
+    }
+
     return Expanded(
       child: Container(
-        height: 80, // Adjust height as needed
+        height: height, // Use the height parameter instead of hardcoded value
         margin: const EdgeInsets.all(4),
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
         decoration: BoxDecoration(
@@ -406,9 +421,9 @@ class StatCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: const Color.fromRGBO(128, 128, 128, 0.2),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
+              color: const Color.fromRGBO(128, 128, 128, 0.1),
+              blurRadius: 3,
+              offset: const Offset(0, 1),
             ),
           ],
         ),
@@ -418,10 +433,23 @@ class StatCard extends StatelessWidget {
               Positioned(
                 top: imageTop ?? 0,
                 right: imageRight ?? 0,
-                child: Image.asset(
-                  imagePath!,
-                  height: 45, // 1.5 times the original height (30 * 1.5)
-                  width: 45,  // 1.5 times the original width (30 * 1.5)
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: getShadowColor(),
+                        blurRadius: 8,
+                        spreadRadius: 1,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Image.asset(
+                    imagePath!,
+                    height: 45,
+                    width: 45,
+                  ),
                 ),
               ),
             Align(
@@ -645,16 +673,18 @@ class _DescriptionSectionState extends State<DescriptionSection> {
               StatCard(
                 value: "₹600.00",
                 imagePath: 'assets/rupee png (1).png',
-                imageTop: -15,
+                imageTop: 0,
                 imageRight: 100,
                 label: "Session Fee",
+                height: 110, // Increased height for About tab StatCard
               ),
               StatCard(
                 value: "---",
                 imagePath: 'assets/doctor png.png',
-                imageTop: -15,
+                imageTop: 0,
                 imageRight: 100,
                 label: "Online Fee",
+                height: 110, // Increased height for About tab StatCard
               ),
             ],
           ),
