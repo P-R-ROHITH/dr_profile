@@ -227,151 +227,182 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Profile Section
-            Container(
-              color: Colors.lightBlue[50], // Light blue background for the profile section
-              child: Column(
-                children: [
-                  Stack(
-                    clipBehavior: Clip.none,
+      // Remove bottomNavigationBar
+      body: Stack(
+        children: [
+          // Main scrollable content
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                // Profile Section
+                Container(
+                  color: Colors.lightBlue[50], // Light blue background for the profile section
+                  child: Column(
                     children: [
-                      const TopSection(),
-                      Positioned(
-                        top: 100,
-                        right: -30,
-                        child: const ProfilePictureWidget(),
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          const TopSection(),
+                          Positioned(
+                            top: 100,
+                            right: -30,
+                            child: const ProfilePictureWidget(),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 16),
+                            Row(
+                              children: [
+                                Container(
+                                  width: 24,
+                                  height: 24,
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue.withAlpha(51), // Semi-transparent blue background
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.blue.withAlpha(102), // Blur effect
+                                        blurRadius: 8,
+                                        spreadRadius: 2,
+                                      ),
+                                    ],
+                                  ),
+                                  child: const Icon(
+                                    Icons.add,
+                                    color: Colors.blue,
+                                    size: 16, // Adjust size as needed
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                const Text(
+                                  "Neurologic",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              "Dr. Keerthi Raj",
+                              style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 4),
+                            const Text(
+                              "MBBS, FCPS, FACC",
+                              style: TextStyle(fontSize: 14, color: Colors.grey),
+                            ),
+                            const SizedBox(height: 12),
+                            Row(
+                              children: [
+                                const Icon(Icons.circle, color: Colors.green, size: 12),
+                                const SizedBox(width: 8),
+                                const Text(
+                                  "Available now",
+                                  style: TextStyle(fontSize: 14, color: Colors.black),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            const StatCardsSection(),
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 16),
-                        Row(
-                          children: [
-                            Container(
-                              width: 24,
-                              height: 24,
-                              decoration: BoxDecoration(
-                                color: Colors.blue.withAlpha(51), // Semi-transparent blue background
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.blue.withAlpha(102), // Blur effect
-                                    blurRadius: 8,
-                                    spreadRadius: 2,
-                                  ),
-                                ],
-                              ),
-                              child: const Icon(
-                                Icons.add,
-                                color: Colors.blue,
-                                size: 16, // Adjust size as needed
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            const Text(
-                              "Neurologic",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
+                ),
+                // Light blue background section
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue[50],
+                  ),
+                  child: Column(
+                    children: [
+                      TabContentWidget(
+                        selectedTab: _tabs[_selectedTab],
+                        tabs: _tabs,
+                        initialIndex: _selectedTab,
+                        onTabChanged: (index) {
+                          setState(() {
+                            _selectedTab = index;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 100), // Add space at the bottom for the floating button
+              ],
+            ),
+          ),
+          // Floating Book Now button
+          Positioned(
+            left: 16,
+            right: 16,
+            bottom: 24,
+            child: IgnorePointer(
+              ignoring: false,
+              child: ElevatedButton(
+                onPressed: () {
+                  // Add booking functionality here
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 56),
+                  backgroundColor: Colors.transparent, // Make button background transparent
+                  shadowColor: Colors.transparent,
+                  elevation: 0,
+                  padding: EdgeInsets.zero, // Remove default padding
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Ink(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xE63F2B96), // Dark violet with 90% opacity
+                        Color(0xE61A2980), // Dark blue with 90% opacity
+                      ],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Container(
+                    height: 56,
+                    alignment: Alignment.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.calendar_today,
+                          size: 24,
+                          color: Colors.white,
                         ),
-                        const SizedBox(height: 8),
-                        const Text(
-                          "Dr. Keerthi Raj",
-                          style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+                        SizedBox(width: 12),
+                        Text(
+                          'Book Now',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
-                        const SizedBox(height: 4),
-                        const Text(
-                          "MBBS, FCPS, FACC",
-                          style: TextStyle(fontSize: 14, color: Colors.grey),
-                        ),
-                        const SizedBox(height: 12),
-                        Row(
-                          children: [
-                            const Icon(Icons.circle, color: Colors.green, size: 12),
-                            const SizedBox(width: 8),
-                            const Text(
-                              "Available now",
-                              style: TextStyle(fontSize: 14, color: Colors.black),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        const StatCardsSection(),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            // Light blue background section
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.blue[50],
-              ),
-              child: Column(
-                children: [
-                  TabContentWidget(
-                    selectedTab: _tabs[_selectedTab],
-                    tabs: _tabs,
-                    initialIndex: _selectedTab,
-                    onTabChanged: (index) {
-                      setState(() {
-                        _selectedTab = index;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-      // Fixed "Book Now" button at the bottom
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 24), // Increased bottom padding to raise the button
-        child: ElevatedButton(
-          onPressed: () {
-            // Add booking functionality here
-          },
-          style: ElevatedButton.styleFrom(
-            minimumSize: const Size(double.infinity, 56),
-            backgroundColor: Colors.blue, // Button color
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            elevation: 0, // Remove shadow for a cleaner look
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(
-                Icons.calendar_today,
-                size: 24,
-                color: Colors.white,
-              ),
-              SizedBox(width: 12),
-              Text(
-                'Book Now',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
