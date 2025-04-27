@@ -355,49 +355,30 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 56),
-                  backgroundColor: Colors.transparent, // Make button background transparent
-                  shadowColor: Colors.transparent,
-                  elevation: 0,
-                  padding: EdgeInsets.zero, // Remove default padding
+                  backgroundColor: Colors.blue, // Button color
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
+                  elevation: 0, // Remove shadow for a cleaner look
                 ),
-                child: Ink(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xE63F2B96), // Dark violet with 90% opacity
-                        Color(0xE61A2980), // Dark blue with 90% opacity
-                      ],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.calendar_today,
+                      size: 24,
+                      color: Colors.white,
                     ),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Container(
-                    height: 56,
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          Icons.calendar_today,
-                          size: 24,
-                          color: Colors.white,
-                        ),
-                        SizedBox(width: 12),
-                        Text(
-                          'Book Now',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
+                    SizedBox(width: 12),
+                    Text(
+                      'Book Now',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),
