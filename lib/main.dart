@@ -246,7 +246,23 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
                           Positioned(
                             top: 100,
                             right: -30,
-                            child: const ProfilePictureWidget(),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              clipBehavior: Clip.none,
+                              children: [
+                                const ProfilePictureWidget(),
+                                Positioned(
+                                  top: 200, // Adjust this value to control the vertical overlap
+                                  right: -5,
+                                  left: 0,
+                                  child: Image.asset(
+                                    'assets/bronze badge png.png', // Ensure this asset exists and is declared in pubspec.yaml
+                                    width: 40, // Adjust size as needed
+                                    height: 40,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -375,9 +391,9 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
-                          Icon(
-                            Icons.calendar_today,
-                            size: 24,
+                          ImageIcon(
+                            AssetImage('assets/calender.png'),
+                            size: 30,
                             color: Colors.white,
                           ),
                           SizedBox(width: 15),
@@ -979,7 +995,14 @@ class _ReviewsSectionState extends State<ReviewsSection> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFE4E9),
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xFFEEE8F5), // #EEE8F5
+                      Color(0xFFF2B6FF), // #F2B6FF
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Row(
