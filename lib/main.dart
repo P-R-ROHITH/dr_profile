@@ -651,14 +651,141 @@ class EducationTabContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: Text(
-          'Education Information Here',
-          style: TextStyle(fontSize: 18),
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromRGBO(128, 128, 128, 0.1),
+              blurRadius: 3,
+              offset: const Offset(0, 1),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Stack(
+          children: [
+            // Vertical blue line connecting all dots
+            Positioned(
+              left: 8,
+              top: 20,
+              bottom: 20,
+              width: 2,
+              child: Container(
+                color: Colors.blue,
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildEducationItem(
+                  'JIPMER PUDUCHERRY',
+                  'MBBS',
+                  '2008 - 2012',
+                  'assets/hospital 1.png',
+                ),
+                const SizedBox(height: 24),
+                _buildEducationItem(
+                  'AIIMS DELHI',
+                  'FCPS - Neurology',
+                  '2013 - 2015',
+                  'assets/hospital 2.png',
+                ),
+                const SizedBox(height: 24),
+                _buildEducationItem(
+                  'AMERICAN COLLEGE OF CARDIOLOGY',
+                  'FACC',
+                  '2016 - 2017',
+                  'assets/hospital 3.png',
+                ),
+              ],
+            ),
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _buildEducationItem(String college, String course, String year, String imagePath) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Blue dot
+        Container(
+          margin: const EdgeInsets.only(right: 16),
+          width: 18,
+          height: 18,
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.white, width: 3),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.blue.withOpacity(0.3),
+                blurRadius: 4,
+                spreadRadius: 1,
+              ),
+            ],
+          ),
+        ),
+        // College image
+        Container(
+          width: 40,
+          height: 40,
+          margin: const EdgeInsets.only(right: 12),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                blurRadius: 8,
+                spreadRadius: 1,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Image.asset(
+            imagePath,
+            width: 40,
+            height: 40,
+          ),
+        ),
+        // Education details
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                college,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                course,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[700],
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                year,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[500],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
