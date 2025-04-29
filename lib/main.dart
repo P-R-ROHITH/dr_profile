@@ -262,20 +262,13 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
                                   width: 24,
                                   height: 24,
                                   decoration: BoxDecoration(
-                                    color: Colors.blue.withAlpha(51), // Semi-transparent blue background
+                                    color: Colors.blue, // Solid blue background
                                     shape: BoxShape.circle,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.blue.withAlpha(102), // Blur effect
-                                        blurRadius: 8,
-                                        spreadRadius: 2,
-                                      ),
-                                    ],
                                   ),
                                   child: const Icon(
                                     Icons.add,
-                                    color: Colors.blue,
-                                    size: 16, // Adjust size as needed
+                                    color: Colors.white, // White plus icon
+                                    size: 16,
                                   ),
                                 ),
                                 const SizedBox(width: 8),
@@ -344,41 +337,62 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
           ),
           // Floating Book Now button
           Positioned(
-            left: 16,
-            right: 16,
+            left: 0, // Reduce side margins to make the button visually longer
+            right: 0,
             bottom: 24,
             child: IgnorePointer(
               ignoring: false,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Add booking functionality here
-                },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 56),
-                  backgroundColor: Colors.blue, // Button color
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  elevation: 0, // Remove shadow for a cleaner look
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(
-                      Icons.calendar_today,
-                      size: 24,
-                      color: Colors.white,
+              child: Opacity(
+                opacity: 0.9, // 10% transparent
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Add booking functionality here
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 64), // Increased height from 56 to 64
+                    backgroundColor: Colors.transparent, // Make button background transparent
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    SizedBox(width: 12),
-                    Text(
-                      'Book Now',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                    elevation: 0, // Remove shadow for a cleaner look
+                  ),
+                  child: Ink(
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [
+                          Color(0xFF4359FD), // #4359FD
+                          Color(0xFF1458F9), // #1458F9
+                        ],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Container(
+                      width: double.infinity,
+                      height: 64, // Match the increased height
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            Icons.calendar_today,
+                            size: 24,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: 15),
+                          Text(
+                            'Book Now',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
