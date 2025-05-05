@@ -1669,63 +1669,72 @@ class TabContentWidget extends StatelessWidget {
           ],
         );
       case 'Education':
-        return SizedBox(
-          height: 260, // Increased height to allow more space between dots
-          child: Stack(
-            children: [
-              // Graduation cap image
-              Positioned(
-                left: 20,
-                top: 0,
-                child: Image.asset(
-                  'assets/graduation cap.png',
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.contain,
+        return SingleChildScrollView(
+          child: SizedBox(
+            height: 600, // Increased height for more space
+            child: Stack(
+              children: [
+                // Graduation cap image
+                Positioned(
+                  left: 20,
+                  top: 0,
+                  child: Image.asset(
+                    'assets/graduation cap.png',
+                    width: 80,
+                    height: 80,
+                    fit: BoxFit.contain,
+                  ),
                 ),
-              ),
-              // Blue timeline with checkpoints BELOW the image
-              Positioned(
-                left: 55, // Centered under the image (image left + image width/2 - timeline width/2)
-                top: 90,  // Just below the image (image height + some spacing)
-                bottom: 0,
-                child: Column(
-                  children: List.generate(3, (index) {
-                    return Expanded(
-                      child: Column(
-                        children: [
-                          // Extend blue line above the first dot (optional)
-                          if (index == 0)
-                            Container(
-                              width: 3,
-                              height: 40, // Increased line height above first dot
-                              color: Colors.blue,
-                            ),
-                          // Blue checkpoint
-                          Container(
-                            width: 10,
-                            height: 10,
-                            decoration: const BoxDecoration(
-                              color: Colors.blue,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          // Blue line (except after last checkpoint)
-                          if (index != 2)
-                            SizedBox(
-                              height: 50, // Increased space between dots
-                              child: Container(
-                                width: 3,
-                                color: Colors.blue,
-                              ),
-                            ),
-                        ],
+                // Blue vertical line (continuous)
+                Positioned(
+                  left: 59, // Centered under the image (left + image width/2 - line width/2)
+                  top: 90,
+                  bottom: 40,
+                  child: Container(
+                    width: 3,
+                    color: Colors.blue,
+                  ),
+                ),
+                // Blue dots (checkpoints) - moved further down and more spaced
+                Positioned(
+                  left: 55, // Centered under the image
+                  top: 180, // Moved further down from 130 to 180
+                  child: Column(
+                    children: [
+                      // First dot
+                      Container(
+                        width: 11,
+                        height: 11,
+                        decoration: const BoxDecoration(
+                          color: Colors.blue,
+                          shape: BoxShape.circle,
+                        ),
                       ),
-                    );
-                  }),
+                      const SizedBox(height: 110), // More space between dots
+                      // Second dot
+                      Container(
+                        width: 11,
+                        height: 11,
+                        decoration: const BoxDecoration(
+                          color: Colors.blue,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      const SizedBox(height: 110), // More space between dots
+                      // Third dot
+                      Container(
+                        width: 11,
+                        height: 11,
+                        decoration: const BoxDecoration(
+                          color: Colors.blue,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       default:
