@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, duplicate_ignore
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -443,6 +445,7 @@ class StatCard extends StatelessWidget {
     Color getShadowColor() {
       switch (label) {
         case "Experience":
+          // ignore: deprecated_member_use
           return Colors.orange.withOpacity(0.2);
         case "Rating":
           return Colors.amber.withOpacity(0.2);
@@ -651,141 +654,11 @@ class EducationTabContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: const Color.fromRGBO(128, 128, 128, 0.1),
-              blurRadius: 3,
-              offset: const Offset(0, 1),
-            ),
-          ],
-        ),
-        padding: const EdgeInsets.all(16),
-        child: Stack(
-          children: [
-            // Vertical blue line connecting all dots
-            Positioned(
-              left: 8,
-              top: 20,
-              bottom: 20,
-              width: 2,
-              child: Container(
-                color: Colors.blue,
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildEducationItem(
-                  'JIPMER PUDUCHERRY',
-                  'MBBS',
-                  '2008 - 2012',
-                  'assets/hospital 1.png',
-                ),
-                const SizedBox(height: 24),
-                _buildEducationItem(
-                  'AIIMS DELHI',
-                  'FCPS - Neurology',
-                  '2013 - 2015',
-                  'assets/hospital 2.png',
-                ),
-                const SizedBox(height: 24),
-                _buildEducationItem(
-                  'AMERICAN COLLEGE OF CARDIOLOGY',
-                  'FACC',
-                  '2016 - 2017',
-                  'assets/hospital 3.png',
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildEducationItem(String college, String course, String year, String imagePath) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Blue dot
-        Container(
-          margin: const EdgeInsets.only(right: 16),
-          width: 18,
-          height: 18,
-          decoration: BoxDecoration(
-            color: Colors.blue,
-            shape: BoxShape.circle,
-            border: Border.all(color: Colors.white, width: 3),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.blue.withOpacity(0.3),
-                blurRadius: 4,
-                spreadRadius: 1,
-              ),
-            ],
-          ),
-        ),
-        // College image
-        Container(
-          width: 40,
-          height: 40,
-          margin: const EdgeInsets.only(right: 12),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                blurRadius: 8,
-                spreadRadius: 1,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Image.asset(
-            imagePath,
-            width: 40,
-            height: 40,
-          ),
-        ),
-        // Education details
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                college,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                course,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[700],
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                year,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[500],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
+    return Image.asset(
+      'assets/graduation cap.png',
+      width: 170,
+      height: 170,
+      fit: BoxFit.contain,
     );
   }
 }
@@ -1490,6 +1363,10 @@ class TabContentWidget extends StatelessWidget {
           topRight: Radius.circular(24),
         ),
       ),
+      // Make the tab longer by increasing the minHeight
+      constraints: const BoxConstraints(
+        minHeight: 600, // Increase this value to make the tab longer
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1792,35 +1669,64 @@ class TabContentWidget extends StatelessWidget {
           ],
         );
       case 'Education':
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Education & Qualifications',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            EducationMilestoneCard(
-              collegeName: "BANGALORE MEDICAL COLLEGE",
-              degree: "MBBS, Medicine",
-              duration: "2010 - 2012",
-              imageAsset: "assets/hospital 1.png",
-            ),
-            const SizedBox(height: 12),
-            EducationMilestoneCard(
-              collegeName: "AIIMS DELHI",
-              degree: "FCPS - Neurology",
-              duration: "2013 - 2015",
-              imageAsset: "assets/hospital 2.png",
-            ),
-            const SizedBox(height: 12),
-            EducationMilestoneCard(
-              collegeName: "AMERICAN COLLEGE OF CARDIOLOGY",
-              degree: "FACC",
-              duration: "2016 - 2017",
-              imageAsset: "assets/hospital 3.png",
-            ),
-          ],
+        return SizedBox(
+          height: 260, // Increased height to allow more space between dots
+          child: Stack(
+            children: [
+              // Graduation cap image
+              Positioned(
+                left: 20,
+                top: 0,
+                child: Image.asset(
+                  'assets/graduation cap.png',
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.contain,
+                ),
+              ),
+              // Blue timeline with checkpoints BELOW the image
+              Positioned(
+                left: 55, // Centered under the image (image left + image width/2 - timeline width/2)
+                top: 90,  // Just below the image (image height + some spacing)
+                bottom: 0,
+                child: Column(
+                  children: List.generate(3, (index) {
+                    return Expanded(
+                      child: Column(
+                        children: [
+                          // Extend blue line above the first dot (optional)
+                          if (index == 0)
+                            Container(
+                              width: 3,
+                              height: 40, // Increased line height above first dot
+                              color: Colors.blue,
+                            ),
+                          // Blue checkpoint
+                          Container(
+                            width: 10,
+                            height: 10,
+                            decoration: const BoxDecoration(
+                              color: Colors.blue,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          // Blue line (except after last checkpoint)
+                          if (index != 2)
+                            SizedBox(
+                              height: 50, // Increased space between dots
+                              child: Container(
+                                width: 3,
+                                color: Colors.blue,
+                              ),
+                            ),
+                        ],
+                      ),
+                    );
+                  }),
+                ),
+              ),
+            ],
+          ),
         );
       default:
         return const SizedBox.shrink();
