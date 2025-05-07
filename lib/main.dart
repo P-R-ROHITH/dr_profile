@@ -1669,12 +1669,31 @@ class TabContentWidget extends StatelessWidget {
           ],
         );
       case 'Education':
+        // Define your timeline events here.
+        final List<TimelineData> timelineItems = [
+          TimelineData(
+            title: "COLLEGE 1",
+            subtitle: "COURSE 1",
+            description: "2010 - 2014",
+          ),
+          TimelineData(
+            title: "COLLEGE 2",
+            subtitle: "COURSE 2",
+            description: "2014 - 2016",
+          ),
+          TimelineData(
+            title: "COLLEGE 3",
+            subtitle: "COURSE 3",
+            description: "2016 - 2018",
+          ),
+        ];
+
         return SingleChildScrollView(
           child: SizedBox(
-            height: 600, // Increased height for more space
+            height: 600,
             child: Stack(
               children: [
-                // Graduation cap image
+                // Graduation cap image (keep position unchanged)
                 Positioned(
                   left: 20,
                   top: 0,
@@ -1685,52 +1704,25 @@ class TabContentWidget extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                 ),
-                // Blue vertical line (continuous)
+                // Timeline widget below the image
                 Positioned(
-                  left: 59, // Centered under the image (left + image width/2 - line width/2)
-                  top: 90,
-                  bottom: 40,
-                  child: Container(
-                    width: 3,
-                    color: Colors.blue,
-                  ),
-                ),
-                // Blue dots (checkpoints) - moved further down and more spaced
-                Positioned(
-                  left: 55, // Centered under the image
-                  top: 180, // Moved further down from 130 to 180
-                  child: Column(
-                    children: [
-                      // First dot
-                      Container(
-                        width: 11,
-                        height: 11,
-                        decoration: const BoxDecoration(
-                          color: Colors.blue,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      const SizedBox(height: 110), // More space between dots
-                      // Second dot
-                      Container(
-                        width: 11,
-                        height: 11,
-                        decoration: const BoxDecoration(
-                          color: Colors.blue,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      const SizedBox(height: 110), // More space between dots
-                      // Third dot
-                      Container(
-                        width: 11,
-                        height: 11,
-                        decoration: const BoxDecoration(
-                          color: Colors.blue,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    ],
+                  left: 28, // <-- Move timeline a little bit to the left (was 40)
+                  top: 80,  // <-- Move timeline and its contents up (was 100)
+                  right: 0,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 0, right: 0),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: timelineItems.length,
+                      itemBuilder: (context, index) {
+                        return TimelineItemWidget(
+                          data: timelineItems[index],
+                          isFirst: index == 0,
+                          isLast: index == timelineItems.length - 1,
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],
@@ -1986,6 +1978,147 @@ class TimelineIndicator extends StatelessWidget {
               decoration: const BoxDecoration(
                 color: Colors.blue,
                 shape: BoxShape.circle,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TimelineData {
+  final String title;
+  final String subtitle;
+  final String description;
+
+  TimelineData({
+    required this.title,
+    required this.subtitle,
+    required this.description,
+  });
+}
+
+class TimelineItemWidget extends StatelessWidget {
+  final TimelineData data;
+  final bool isFirst;
+  final bool isLast;
+
+  const TimelineItemWidget({
+    Key? key,
+    required this.data,
+    this.isFirst = false,
+    this.isLast = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Map timeline index to hospital image asset
+    String? getHospitalImage() {
+      if (data.title.contains("COLLEGE 1")) {
+        return 'assets/hospital 1.png';
+      } else if (data.title.contains("COLLEGE 2")) {
+        return 'assets/hospital 2.png';
+      } else if (data.title.contains("COLLEGE 3")) {
+        return 'assets/hospital 3.png';
+      }
+      return null;
+    }
+
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Timeline indicator column
+          Container(
+            width: 40,
+            child: Column(
+              children: [
+                // Top vertical line segment (always dark blue and thicker)
+                Expanded(
+                  flex: isFirst ? 2 : 1,
+                  child: Container(
+                    width: 4, // Thicker line
+                    color: const Color(0xFF1458F9), // Dark blue
+                  ),
+                ),
+                // The blue dot is drawn here.
+                Container(
+                  width: 12,
+                  height: 12,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF1458F9), // Dark blue dot
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                // Bottom vertical line segment (drawn only if this is not the last timeline entry).
+                Expanded(
+                  child: Container(
+                    width: 4, // Thicker line
+                    color: isLast ? Colors.transparent : const Color(0xFF1458F9), // Dark blue
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Hospital image in a perfect square
+          if (getHospitalImage() != null)
+            Container(
+              width: 96, // 48 * 2
+              height: 96, // 48 * 2
+              alignment: Alignment.center,
+              margin: const EdgeInsets.only(left: 8, right: 8, top: 0),
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16), // doubled for proportional rounding
+                  child: Image.asset(
+                    getHospitalImage()!,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+          // Timeline event details moved to the right side
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey.shade300, width: 1),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    data.title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    data.subtitle,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[600],
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    data.description,
+                    style: const TextStyle(fontSize: 14),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
             ),
           ),
