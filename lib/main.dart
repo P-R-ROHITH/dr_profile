@@ -1695,19 +1695,33 @@ class TabContentWidget extends StatelessWidget {
               children: [
                 // Graduation cap image (keep position unchanged)
                 Positioned(
-                  left: 20,
-                  top: 0,
-                  child: Image.asset(
-                    'assets/graduation cap.png',
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.contain,
+                  left: 15,
+                  top: 30,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/graduation cap.png',
+                        width: 60,
+                        height: 60,
+                        fit: BoxFit.contain,
+                      ),
+                      const SizedBox(width: 12),
+                      const Text(
+                        'COMPLETED',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 0, 0, 0), // Dark blue
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                // Timeline widget below the image
+                // Timeline widget directly below the image
                 Positioned(
-                  left: 28, // <-- Move timeline a little bit to the left (was 40)
-                  top: 80,  // <-- Move timeline and its contents up (was 100)
+                  left: 28,
+                  top: 40, // Move timeline more upwards (was 60)
                   right: 0,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 0, right: 0),
