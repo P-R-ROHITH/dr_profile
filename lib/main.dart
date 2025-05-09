@@ -446,11 +446,11 @@ class StatCard extends StatelessWidget {
       switch (label) {
         case "Experience":
           // ignore: deprecated_member_use
-          return Colors.orange.withOpacity(0.2);
+          return const Color.fromARGB(255, 92, 75, 49).withOpacity(0.2);
         case "Rating":
           return Colors.amber.withOpacity(0.2);
         case "Patients":
-          return Colors.green.withOpacity(0.2);
+          return const Color.fromARGB(255, 77, 120, 201).withOpacity(0.2);
         default:
           return Colors.grey.withOpacity(0.2);
       }
@@ -2096,8 +2096,8 @@ class TimelineItemWidget extends StatelessWidget {
           // Timeline event details moved to the right side
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(16),
-              margin: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12), // Less vertical and horizontal padding
+              margin: const EdgeInsets.symmetric(vertical: 2), // Less margin between items
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(color: Colors.grey.shade300, width: 1),
@@ -2109,26 +2109,26 @@ class TimelineItemWidget extends StatelessWidget {
                   Text(
                     data.title,
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 16, // Slightly smaller font
                       fontWeight: FontWeight.bold,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 2), // Less space between title and subtitle
                   Text(
                     data.subtitle,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       color: Colors.grey[600],
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4), // Less space before description
                   Text(
                     data.description,
-                    style: const TextStyle(fontSize: 14),
+                    style: const TextStyle(fontSize: 13),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
