@@ -1689,58 +1689,48 @@ class TabContentWidget extends StatelessWidget {
         ];
 
         return SingleChildScrollView(
-          child: SizedBox(
-            height: 600,
-            child: Stack(
-              children: [
-                // Graduation cap image (keep position unchanged)
-                Positioned(
-                  left: 15,
-                  top: 30,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/graduation cap.png',
-                        width: 60,
-                        height: 60,
-                        fit: BoxFit.contain,
-                      ),
-                      const SizedBox(width: 12),
-                      const Text(
-                        'COMPLETED',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 0, 0, 0), // Dark blue
-                        ),
-                      ),
-                    ],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 30),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(width: 15),
+                  Image.asset(
+                    'assets/graduation cap.png',
+                    width: 60,
+                    height: 60,
+                    fit: BoxFit.contain,
                   ),
-                ),
-                // Timeline widget directly below the image
-                Positioned(
-                  left: 28,
-                  top: 40, // Move timeline more upwards (was 60)
-                  right: 0,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 0, right: 0),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: timelineItems.length,
-                      itemBuilder: (context, index) {
-                        return TimelineItemWidget(
-                          data: timelineItems[index],
-                          isFirst: index == 0,
-                          isLast: index == timelineItems.length - 1,
-                        );
-                      },
+                  const SizedBox(width: 12),
+                  const Text(
+                    'COMPLETED',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 0, 0, 0), // Dark blue
                     ),
                   ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.only(left: 28, right: 0),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: timelineItems.length,
+                  itemBuilder: (context, index) {
+                    return TimelineItemWidget(
+                      data: timelineItems[index],
+                      isFirst: index == 0,
+                      isLast: index == timelineItems.length - 1,
+                    );
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       default:
