@@ -254,7 +254,7 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
                               children: [
                                 const ProfilePictureWidget(),
                                 Positioned(
-                                  top: 200, // Adjust this value to control the vertical overlap
+                                  top: 205, // Adjust this value to control the vertical overlap
                                   right: -5,
                                   left: 0,
                                   child: Image.asset(
@@ -429,6 +429,7 @@ class StatCard extends StatelessWidget {
   final double? imageTop;
   final double? imageRight;
   final double height;
+  final bool showGradientShadow; // NEW
 
   const StatCard({
     super.key,
@@ -438,24 +439,24 @@ class StatCard extends StatelessWidget {
     this.imageTop,
     this.imageRight,
     this.height = 85, // Default height with new optional parameter
+    this.showGradientShadow = false, // NEW
   });
+
+  List<Color> _getGradientColors(String label) {
+    switch (label) {
+      case "Experience":
+        return [const Color(0xFF5C4B31).withOpacity(0.5), Colors.white.withOpacity(0.0)];
+      case "Rating":
+        return [const Color(0xFFFFD700).withOpacity(0.5), Colors.white.withOpacity(0.0)];
+      case "Patients":
+        return [const Color(0xFF1E88E5).withOpacity(0.5), Colors.white.withOpacity(0.0)];
+      default:
+        return [Colors.black.withOpacity(0.2), Colors.white.withOpacity(0.0)];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    Color getShadowColor() {
-      switch (label) {
-        case "Experience":
-          // ignore: deprecated_member_use
-          return const Color.fromARGB(255, 92, 75, 49).withOpacity(0.2);
-        case "Rating":
-          return Colors.amber.withOpacity(0.2);
-        case "Patients":
-          return const Color.fromARGB(255, 77, 120, 201).withOpacity(0.2);
-        default:
-          return Colors.grey.withOpacity(0.2);
-      }
-    }
-
     return Expanded(
       child: Container(
         height: height, // Use the height parameter instead of hardcoded value
@@ -478,24 +479,31 @@ class StatCard extends StatelessWidget {
               Positioned(
                 top: imageTop ?? 0,
                 right: imageRight ?? 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: getShadowColor(),
-                        blurRadius: 8,
-                        spreadRadius: 1,
-                        offset: const Offset(0, 2),
+                child: showGradientShadow
+                    ? Container(
+                        width: (label == "Rating" || label == "Patients") ? 46 : 38, // larger circle
+                        height: (label == "Rating" || label == "Patients") ? 46 : 38,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: RadialGradient(
+                            colors: _getGradientColors(label),
+                            center: Alignment.center,
+                            radius: 0.7, // Adjust for softness
+                          ),
+                        ),
+                        child: Center(
+                          child: Image.asset(
+                            imagePath!,
+                            height: (label == "Rating" || label == "Patients") ? 36 : 28, // larger image
+                            width: (label == "Rating" || label == "Patients") ? 36 : 28,
+                          ),
+                        ),
+                      )
+                    : Image.asset(
+                        imagePath!,
+                        height: (label == "Rating" || label == "Patients") ? 42 : 35, // larger image
+                        width: (label == "Rating" || label == "Patients") ? 42 : 35,
                       ),
-                    ],
-                  ),
-                  child: Image.asset(
-                    imagePath!,
-                    height: 45,
-                    width: 45,
-                  ),
-                ),
               ),
             Align(
               alignment: Alignment.bottomLeft, // Align content to the bottom-left
@@ -543,20 +551,25 @@ class StatCardsSection extends StatelessWidget {
           imagePath: 'assets/suitcase.png',
           imageTop: -10,
           imageRight: 5,
+          showGradientShadow: true, // NEW
         ),
         StatCard(
           value: "4.8",
           label: "Rating",
           imagePath: 'assets/star png.png',
-          imageTop: -10,
+          imageTop: -12, // slightly higher for larger image
           imageRight: 0,
+          showGradientShadow: true, // NEW
+          height: 85, // keep default height
         ),
         StatCard(
           value: "100+",
           label: "Patients",
           imagePath: 'assets/patients png.png',
-          imageTop: -10,
+          imageTop: -12, // slightly higher for larger image
           imageRight: 0,
+          showGradientShadow: true, // NEW
+          height: 85, // keep default height
         ),
       ],
     );
