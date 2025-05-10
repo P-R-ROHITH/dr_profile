@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Colors.blue,
-        scaffoldBackgroundColor: Colors.lightBlue[50], // Light blue background
+        scaffoldBackgroundColor: const Color(0xFFDCEAFC), // Light blue background
       ),
       home: const DoctorProfilePage(),
     );
@@ -176,25 +176,7 @@ class _TopSectionState extends State<TopSection> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  width: 36, // Reduced size
-                  height: 36,
-                  decoration: const BoxDecoration(
-                    color: Colors.white, // White background
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    icon: const Icon(Icons.share, color: Colors.grey, size: 22), // Optionally reduce icon size
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Share button clicked!')),
-                      );
-                    },
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                  ),
-                ),
-                const SizedBox(width: 8),
+                // Favorites button FIRST
                 Container(
                   width: 36, // Reduced size
                   height: 36,
@@ -212,6 +194,26 @@ class _TopSectionState extends State<TopSection> {
                       setState(() {
                         isFavorited = !isFavorited;
                       });
+                    },
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                // Share button SECOND
+                Container(
+                  width: 36, // Reduced size
+                  height: 36,
+                  decoration: const BoxDecoration(
+                    color: Colors.white, // White background
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.share, color: Colors.grey, size: 22),
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Share button clicked!')),
+                      );
                     },
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
@@ -250,7 +252,7 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
               children: [
                 // Profile Section
                 Container(
-                  color: Colors.lightBlue[50], // Light blue background for the profile section
+                  color: const Color(0xFFDCEAFC), // Light blue background for the profile section
                   child: Column(
                     children: [
                       Stack(
@@ -343,8 +345,8 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
                 ),
                 // Light blue background section
                 Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blue[50],
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFDCEAFC),
                   ),
                   child: Column(
                     children: [
@@ -807,7 +809,7 @@ class _SpecializationsSectionState extends State<SpecializationsSection> {
         ),
         // Specialization Section
         Container(
-          color: Colors.lightBlue[50], // Light blue background for the specialization section
+          color: const Color(0xFFDCEAFC), // Light blue background for the specialization section
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -926,7 +928,7 @@ class LocationSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.lightBlue[50], // Light blue background for the location section
+      color: const Color(0xFFDCEAFC), // Light blue background for the location section
       padding: const EdgeInsets.symmetric(horizontal: 16), // Removed vertical padding
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -999,7 +1001,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
     final PageController pageController = PageController(viewportFraction: 0.75);
 
     return Container(
-      color: Colors.lightBlue[50], // Light blue background for the review section
+      color: const Color(0xFFDCEAFC), // Light blue background for the review section
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1380,9 +1382,7 @@ class TabContentWidget extends StatelessWidget {
           BoxShadow(
             color: Colors.blue.withAlpha(25), // 0.1 opacity ≈ 25 in alpha (0.1 * 255)
             blurRadius: 10,
-            offset: const Offset(0, -5),
-          ),
-        ],
+       ) ],
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
@@ -1798,8 +1798,8 @@ class JobListingCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: 60,
-              height: 60,
+              width: 120, // Increased from 60 to 80
+              height: 120, // Increased from 60 to 80
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 image: DecorationImage(
