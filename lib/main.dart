@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use, duplicate_ignore
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const MyApp());
@@ -925,11 +926,34 @@ class BronzeBadgeWidget extends StatelessWidget {
 class LocationSection extends StatelessWidget {
   const LocationSection({super.key});
 
+  // Use your provided Google Maps URL
+  static const String mapsUrl = 'https://maps.app.goo.gl/tyN6a86nqaJnyJFb7';
+
+  // Static map preview image using Google Static Maps API (centered on Trivandrum Medical College as an example)
+  String getStaticMapUrl() {
+    // You can adjust the center/marker as needed for your location
+    return 'https://maps.googleapis.com/maps/api/staticmap'
+        '?center=Trivandrum+Medical+College'
+        '&zoom=15'
+        '&size=600x300'
+        '&markers=color:red%7Clabel:A%7CTrivandrum+Medical+College'
+        '&key=YOUR_API_KEY'; // Optional: Replace with your Google Maps Static API key
+  }
+
+  Future<void> _openGoogleMaps() async {
+    final url = Uri.parse(mapsUrl);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       color: const Color(0xFFDCEAFC), // Light blue background for the location section
-      padding: const EdgeInsets.symmetric(horizontal: 16), // Removed vertical padding
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -938,13 +962,24 @@ class LocationSection extends StatelessWidget {
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8), // Minimal spacing for readability
-          Container(
-            height: 200,
-            decoration: BoxDecoration(
+          GestureDetector(
+            onTap: _openGoogleMaps,
+            child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              image: const DecorationImage(
-                image: AssetImage('assets/mapimage.jpeg'),
+              child: Image.network(
+                getStaticMapUrl(),
+                height: 200,
+                width: double.infinity,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  // Fallback if image fails to load
+                  return Container(
+                    height: 200,
+                    color: Colors.grey[300],
+                    alignment: Alignment.center,
+                    child: const Text('Map preview unavailable'),
+                  );
+                },
               ),
             ),
           ),
