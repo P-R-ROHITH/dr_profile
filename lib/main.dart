@@ -508,7 +508,6 @@ class StatCard extends StatelessWidget {
                           child: Image.asset(
                             imagePath!,
                             height: (label == "Rating" || label == "Patients") ? 36 : 28, // larger image
-                            width: (label == "Rating" || label == "Patients") ? 36 : 28,
                           ),
                         ),
                       )
@@ -1715,34 +1714,11 @@ class TabContentWidget extends StatelessWidget {
         ];
 
         return SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Stack(
             children: [
-              const SizedBox(height: 30),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(width: 15),
-                  Image.asset(
-                    'assets/graduation cap.png',
-                    width: 60,
-                    height: 60,
-                    fit: BoxFit.contain,
-                  ),
-                  const SizedBox(width: 12),
-                  const Text(
-                    'COMPLETED',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 0, 0, 0), // Dark blue
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
+              // Timeline
               Padding(
-                padding: const EdgeInsets.only(left: 28, right: 0),
+                padding: const EdgeInsets.only(top: 0), // No space above timeline!
                 child: ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -1754,6 +1730,31 @@ class TabContentWidget extends StatelessWidget {
                       isLast: index == timelineItems.length - 1,
                     );
                   },
+                ),
+              ),
+              // Cap and COMPLETED text, positioned above the blue line
+              Positioned(
+                left: 10, // Move right by increasing this value (was 0)
+                top: 8,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/graduation cap.png',
+                      width: 45,
+                      height: 45,
+                      fit: BoxFit.contain,
+                    ),
+                    const SizedBox(width: 8),
+                    const Text(
+                      'COMPLETED',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 0, 0, 0),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -2059,49 +2060,49 @@ class TimelineItemWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Timeline indicator column
+          // Timeline indicator column (much wider)
           Container(
-            width: 40,
+            width: 48, // was 32, now much wider
             child: Column(
               children: [
-                // Top vertical line segment (always dark blue and thicker)
+                // Top vertical line segment
                 Expanded(
                   flex: isFirst ? 2 : 1,
                   child: Container(
-                    width: 4, // Thicker line
-                    color: const Color(0xFF1458F9), // Dark blue
+                    width: 4, // slightly thicker
+                    color: const Color(0xFF1458F9),
                   ),
                 ),
-                // The blue dot is drawn here.
+                // The blue dot
                 Container(
-                  width: 12,
-                  height: 12,
+                  width: 18, // was 12, now wider
+                  height: 18,
                   decoration: const BoxDecoration(
-                    color: Color(0xFF1458F9), // Dark blue dot
+                    color: Color(0xFF1458F9),
                     shape: BoxShape.circle,
                   ),
                 ),
-                // Bottom vertical line segment (drawn only if this is not the last timeline entry).
+                // Bottom vertical line segment
                 Expanded(
                   child: Container(
-                    width: 4, // Thicker line
-                    color: isLast ? Colors.transparent : const Color(0xFF1458F9), // Dark blue
+                    width: 4,
+                    color: isLast ? Colors.transparent : const Color(0xFF1458F9),
                   ),
                 ),
               ],
             ),
           ),
-          // Hospital image in a perfect square
+          // Hospital image in a perfect square (much wider)
           if (getHospitalImage() != null)
             Container(
-              width: 96, // 48 * 2
-              height: 96, // 48 * 2
+              width: 72, // was 48, now much wider
+              height: 72,
               alignment: Alignment.center,
-              margin: const EdgeInsets.only(left: 8, right: 8, top: 0),
+              margin: const EdgeInsets.only(left: 16, right: 16, top: 0), // more horizontal margin
               child: AspectRatio(
                 aspectRatio: 1,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16), // doubled for proportional rounding
+                  borderRadius: BorderRadius.circular(16), // larger radius
                   child: Image.asset(
                     getHospitalImage()!,
                     fit: BoxFit.cover,
@@ -2109,11 +2110,11 @@ class TimelineItemWidget extends StatelessWidget {
                 ),
               ),
             ),
-          // Timeline event details moved to the right side
+          // Timeline event details (more horizontal padding)
           Expanded(
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12), // Less vertical and horizontal padding
-              margin: const EdgeInsets.symmetric(vertical: 2), // Less margin between items
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 28), // more horizontal padding
+              margin: const EdgeInsets.symmetric(vertical: 2),
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(color: Colors.grey.shade300, width: 1),
@@ -2125,26 +2126,26 @@ class TimelineItemWidget extends StatelessWidget {
                   Text(
                     data.title,
                     style: const TextStyle(
-                      fontSize: 16, // Slightly smaller font
+                      fontSize: 13,
                       fontWeight: FontWeight.bold,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 2), // Less space between title and subtitle
+                  const SizedBox(height: 2),
                   Text(
                     data.subtitle,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 12,
                       color: Colors.grey[600],
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4), // Less space before description
+                  const SizedBox(height: 4),
                   Text(
                     data.description,
-                    style: const TextStyle(fontSize: 13),
+                    style: const TextStyle(fontSize: 11),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
