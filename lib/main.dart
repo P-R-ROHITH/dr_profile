@@ -153,15 +153,19 @@ class _TopSectionState extends State<TopSection> {
             top: 40,
             left: 16,
             child: Container(
+              width: 36, // Reduced from default (typically 40 or more)
+              height: 36,
               decoration: const BoxDecoration(
                 color: Colors.white, // White background
                 shape: BoxShape.circle,
               ),
               child: IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.grey, size: 24), // Grey icon
+                icon: const Icon(Icons.arrow_back, color: Colors.grey, size: 22), // Optionally reduce icon size
                 onPressed: () {
                   Navigator.pop(context); // Navigate back when pressed
                 },
+                padding: EdgeInsets.zero, // Remove extra padding
+                constraints: const BoxConstraints(), // Remove extra constraints
               ),
             ),
           ),
@@ -173,21 +177,27 @@ class _TopSectionState extends State<TopSection> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
+                  width: 36, // Reduced size
+                  height: 36,
                   decoration: const BoxDecoration(
                     color: Colors.white, // White background
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
-                    icon: const Icon(Icons.share, color: Colors.grey, size: 24), // Grey icon
+                    icon: const Icon(Icons.share, color: Colors.grey, size: 22), // Optionally reduce icon size
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Share button clicked!')),
                       );
                     },
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
                   ),
                 ),
                 const SizedBox(width: 8),
                 Container(
+                  width: 36, // Reduced size
+                  height: 36,
                   decoration: const BoxDecoration(
                     color: Colors.white, // White background
                     shape: BoxShape.circle,
@@ -195,14 +205,16 @@ class _TopSectionState extends State<TopSection> {
                   child: IconButton(
                     icon: Icon(
                       isFavorited ? Icons.favorite : Icons.favorite_border,
-                      color: isFavorited ? Colors.red : Colors.grey, // Grey or red icon
-                      size: 24,
+                      color: isFavorited ? Colors.red : Colors.grey,
+                      size: 22,
                     ),
                     onPressed: () {
                       setState(() {
-                        isFavorited = !isFavorited; // Toggle the favorite state
+                        isFavorited = !isFavorited;
                       });
                     },
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
                   ),
                 ),
               ],
@@ -460,8 +472,9 @@ class StatCard extends StatelessWidget {
     return Expanded(
       child: Container(
         height: height, // Use the height parameter instead of hardcoded value
+
         margin: const EdgeInsets.all(4),
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4), // Reduced padding
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
@@ -549,7 +562,7 @@ class StatCardsSection extends StatelessWidget {
           value: "11 yrs",
           label: "Experience",
           imagePath: 'assets/suitcase.png',
-          imageTop: -10,
+          imageTop: -8, // 2 units down from previous -10
           imageRight: 5,
           showGradientShadow: true, // NEW
         ),
@@ -557,7 +570,7 @@ class StatCardsSection extends StatelessWidget {
           value: "4.8",
           label: "Rating",
           imagePath: 'assets/star png.png',
-          imageTop: -12, // slightly higher for larger image
+          imageTop: -8, // 2 units down from previous -10
           imageRight: 0,
           showGradientShadow: true, // NEW
           height: 85, // keep default height
@@ -566,7 +579,7 @@ class StatCardsSection extends StatelessWidget {
           value: "100+",
           label: "Patients",
           imagePath: 'assets/patients png.png',
-          imageTop: -12, // slightly higher for larger image
+          imageTop: -8, // 2 units down from previous -10
           imageRight: 0,
           showGradientShadow: true, // NEW
           height: 85, // keep default height
