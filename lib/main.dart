@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Colors.blue,
-        scaffoldBackgroundColor: const Color(0xFFDCEAFC), // Light blue background
+        scaffoldBackgroundColor: const Color(0xFFE3F2FD), // Light blue background
       ),
       home: const DoctorProfilePage(),
     );
@@ -253,7 +253,7 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
               children: [
                 // Profile Section
                 Container(
-                  color: const Color(0xFFDCEAFC), // Light blue background for the profile section
+                  color: const Color(0xFFE3F2FD), // Light blue background for the profile section
                   child: Column(
                     children: [
                       Stack(
@@ -347,7 +347,7 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
                 // Light blue background section
                 Container(
                   decoration: const BoxDecoration(
-                    color: Color(0xFFDCEAFC),
+                    color: Color(0xFFE3F2FD),
                   ),
                   child: Column(
                     children: [
@@ -516,8 +516,8 @@ class StatCard extends StatelessWidget {
                       )
                     : Image.asset(
                         imagePath!,
-                        height: (label == "Rating" || label == "Patients") ? 42 : 35, // larger image
-                        width: (label == "Rating" || label == "Patients") ? 42 : 35,
+                        height: 60, // <-- Increased from 42/35 to 60 for About section
+                        width: 60,  // <-- Increased from 42/35 to 60 for About section
                       ),
               ),
             Align(
@@ -810,7 +810,7 @@ class _SpecializationsSectionState extends State<SpecializationsSection> {
         ),
         // Specialization Section
         Container(
-          color: const Color(0xFFDCEAFC), // Light blue background for the specialization section
+          color: const Color(0xFFE3F2FD), // Light blue background for the specialization section
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -952,7 +952,7 @@ class LocationSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xFFDCEAFC), // Light blue background for the location section
+      color: const Color(0xFFE3F2FD), // Light blue background for the location section
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1036,7 +1036,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
     final PageController pageController = PageController(viewportFraction: 0.75);
 
     return Container(
-      color: const Color(0xFFDCEAFC), // Light blue background for the review section
+      color: const Color(0xFFE3F2FD), // Light blue background for the review section
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1769,8 +1769,8 @@ class TabContentWidget extends StatelessWidget {
               ),
               // Cap and COMPLETED text, positioned above the blue line
               Positioned(
-                left: 10, // Move right by increasing this value (was 0)
-                top: 8,
+                left: 2, // Changed from 10 to 7 to move the cap 3 units left
+                top: 5,   // Changed from 8 to 5 to move the cap 3 units up
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -1784,7 +1784,7 @@ class TabContentWidget extends StatelessWidget {
                     const Text(
                       'COMPLETED',
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 15,
                         fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 0, 0, 0),
                       ),
@@ -2161,7 +2161,7 @@ class TimelineItemWidget extends StatelessWidget {
                   Text(
                     data.title,
                     style: const TextStyle(
-                      fontSize: 13,
+                      fontSize: 18, // Increased from 13 to 18
                       fontWeight: FontWeight.bold,
                     ),
                     maxLines: 1,
