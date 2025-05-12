@@ -269,7 +269,7 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
                               children: [
                                 const ProfilePictureWidget(),
                                 Positioned(
-                                  top: 205, // Adjust this value to control the vertical overlap
+                                  top: 213, // Adjust this value to control the vertical overlap
                                   right: -5,
                                   left: 0,
                                   child: Image.asset(
@@ -331,7 +331,7 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
                                 const Icon(Icons.circle, color: Colors.green, size: 12),
                                 const SizedBox(width: 8),
                                 const Text(
-                                  "Available now",
+                                  "Available today",
                                   style: TextStyle(fontSize: 14, color: Colors.black),
                                 ),
                               ],
@@ -351,6 +351,17 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
                   ),
                   child: Column(
                     children: [
+                      // Gradient Widget (copied from SpecializationsSection)
+                      Container(
+                        height: 50, // Adjust height as needed
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color(0xFFE3F2FD), Colors.white], // Reversed: light blue to white
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                        ),
+                      ),
                       TabContentWidget(
                         selectedTab: _tabs[_selectedTab],
                         tabs: _tabs,
@@ -1382,12 +1393,21 @@ class ProfilePictureWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      radius: 150, // Adjust size as needed
+      radius: 150, // Outer transparent circle
       backgroundColor: Colors.transparent,
-      child: CircleAvatar(
-        radius: 150, // Slightly smaller to create a border effect
-        backgroundColor: Colors.transparent,
-        backgroundImage: AssetImage('assets/doctorprofilepic.png'),
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Colors.blue, // Blue border
+            width: 3,           // Adjust border thickness as needed
+          ),
+        ),
+        child: CircleAvatar(
+          radius: 80, // Slightly smaller to create a border effect
+          backgroundColor: Colors.transparent,
+          backgroundImage: AssetImage('assets/keerthi.jpg'),
+        ),
       ),
     );
   }
@@ -1418,10 +1438,6 @@ class TabContentWidget extends StatelessWidget {
             color: Colors.blue.withAlpha(25), // 0.1 opacity ≈ 25 in alpha (0.1 * 255)
             blurRadius: 10,
        ) ],
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(24),
-          topRight: Radius.circular(24),
-        ),
       ),
       // Make the tab longer by increasing the minHeight
       constraints: const BoxConstraints(
@@ -2133,7 +2149,7 @@ class TimelineItemWidget extends StatelessWidget {
               width: 72, // was 48, now much wider
               height: 72,
               alignment: Alignment.center,
-              margin: const EdgeInsets.only(left: 16, right: 16, top: 0), // more horizontal margin
+              margin: const EdgeInsets.only(left: 16, right: 4, top: 0), // increased left margin from 4 to 16
               child: AspectRatio(
                 aspectRatio: 1,
                 child: ClipRRect(
