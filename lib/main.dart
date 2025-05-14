@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'book_now_button.dart';
 
 void main() {
   runApp(const MyApp());
@@ -380,66 +381,10 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
             ),
           ),
           // Floating Book Now button
-          Positioned(
-            left: 0, // Reduce side margins to make the button visually longer
-            right: 0,
-            bottom: 24,
-            child: IgnorePointer(
-              ignoring: false,
-              child: Opacity(
-                opacity: 0.9, // 10% transparent
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Add booking functionality here
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 64), // Increased height from 56 to 64
-                    backgroundColor: Colors.transparent, // Make button background transparent
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    elevation: 0, // Remove shadow for a cleaner look
-                  ),
-                  child: Ink(
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [
-                          Color(0xFF4359FD), // #4359FD
-                          Color(0xFF1458F9), // #1458F9
-                        ],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Container(
-                      width: double.infinity,
-                      height: 64, // Match the increased height
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          ImageIcon(
-                            AssetImage('assets/calender.png'),
-                            size: 30,
-                            color: Colors.white,
-                          ),
-                          SizedBox(width: 15),
-                          Text(
-                            'Book Now',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+          BookNowButton(
+            onTap: () {
+              // Add booking functionality here
+            },
           ),
         ],
       ),
@@ -535,12 +480,12 @@ class StatCard extends StatelessWidget {
               alignment: Alignment.bottomLeft, // Align content to the bottom-left
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
+                crossAxisAlignment: CrossAxisAlignment.start, 
                 children: [
                   Text(
                     value,
                     style: const TextStyle(
-                      fontSize: 16, // Increased font size for the value
+                      fontSize: 16, 
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
@@ -1406,7 +1351,7 @@ class ProfilePictureWidget extends StatelessWidget {
         child: CircleAvatar(
           radius: 80, // Slightly smaller to create a border effect
           backgroundColor: Colors.transparent,
-          backgroundImage: AssetImage('assets/keerthi.jpg'),
+          backgroundImage: AssetImage('assets/keerthi1.jpg'),
         ),
       ),
     );
