@@ -3,6 +3,20 @@ import 'package:flutter/material.dart';
 class ProfilePictureWithBadge extends StatelessWidget {
   const ProfilePictureWithBadge({super.key});
 
+  void _showZoomDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: InteractiveViewer(
+          panEnabled: true,
+          minScale: 0.5,
+          maxScale: 4.0,
+          child: Image.asset('assets/keerthi1.jpg'),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -15,18 +29,21 @@ class ProfilePictureWithBadge extends StatelessWidget {
           Positioned(
             left: 5,
             top: 50,
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.blue,
-                  width: 3,
+            child: InkWell(
+              onTap: () => _showZoomDialog(context),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.blue,
+                    width: 3,
+                  ),
                 ),
-              ),
-              child: CircleAvatar(
-                radius: 80,
-                backgroundColor: Colors.transparent,
-                backgroundImage: const AssetImage('assets/keerthi1.jpg'),
+                child: CircleAvatar(
+                  radius: 80,
+                  backgroundColor: Colors.transparent,
+                  backgroundImage: const AssetImage('assets/keerthi1.jpg'),
+                ),
               ),
             ),
           ),

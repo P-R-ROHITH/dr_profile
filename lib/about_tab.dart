@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'location_section.dart';
+
 import 'main.dart';
 import 'reviews/review.dart';
 import 'specializations_section.dart';
@@ -22,8 +22,6 @@ class AboutTabContent extends StatelessWidget {
               const DescriptionSection(),
               const SizedBox(height: 20),
               const SpecializationsSection(),
-              const SizedBox(height: 20),
-              const LocationSection(),
               const SizedBox(height: 20),
               const ReviewsSection(),
               const SizedBox(height: 20),

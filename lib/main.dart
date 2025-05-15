@@ -4,7 +4,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'book_now_button.dart';
 import 'profile_top_section.dart';
 import 'reviews/review.dart';
-import 'location_section.dart';
 import 'profile_pic.dart';
 import 'top_section_buttons.dart';
 import 'stat_cards_section.dart';
@@ -246,8 +245,6 @@ class AboutTabContent extends StatelessWidget {
         const SizedBox(height: 20),
         const ServicesSection(),
         const SizedBox(height: 20),
-        const LocationSection(),
-        const SizedBox(height: 20),
         const ReviewsSection(),
         const SizedBox(height: 20),
         const BookingSection(),
@@ -391,7 +388,6 @@ class TabContentWidget extends StatelessWidget {
             children: [
               const SpecializationsSection(),
               const ServicesSection(), // Add this line
-              const LocationSection(),
               const ReviewsSection(),
             ],
           ),
@@ -699,7 +695,7 @@ class TimelineItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Map timeline index to hospital image asset
+    // Remove the getHospitalImage() function from here
     String? getHospitalImage() {
       if (data.title.contains("COLLEGE 1")) {
         return 'assets/hospital 1.png';

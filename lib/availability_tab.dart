@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AvailabilityTabContent extends StatelessWidget {
   const AvailabilityTabContent({super.key});
@@ -79,15 +80,23 @@ class AvailabilityTabContent extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Container(
-                      width: 45,
-                      height: 45,
-                      margin: const EdgeInsets.only(left: 8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        image: const DecorationImage(
-                          image: AssetImage('assets/mapimage.jpeg'),
-                          fit: BoxFit.cover,
+                    InkWell(
+                      onTap: () async {
+                        final url = 'https://maps.app.goo.gl/tyN6a86nqaJnyJFb7';
+                        if (await canLaunchUrl(Uri.parse(url))) {
+                          await launchUrl(Uri.parse(url));
+                        }
+                      },
+                      child: Container(
+                        width: 45,
+                        height: 45,
+                        margin: const EdgeInsets.only(left: 8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/mapimage.jpeg'),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
