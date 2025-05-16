@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import './calendar_button.dart';
 
 class AvailabilityTabContent extends StatelessWidget {
   const AvailabilityTabContent({super.key});
@@ -198,30 +199,7 @@ class AvailabilityTabContent extends StatelessWidget {
               thickness: 1,
             ),
             Center(
-              child: InkWell(
-                onTap: () {
-                  // Add calendar view functionality here
-                },
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(
-                      Icons.calendar_today,
-                      size: 16,
-                      color: Colors.blue,
-                    ),
-                    SizedBox(width: 6),
-                    Text(
-                      "View Calendar",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.blue,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              child: CalendarButton(),
             ),
           ],
         ),

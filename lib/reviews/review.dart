@@ -43,7 +43,26 @@ class _ReviewsSectionState extends State<ReviewsSection> {
 
   @override
   Widget build(BuildContext context) {
-    final PageController pageController = PageController(viewportFraction: 0.75);
+    final PageController pageController = PageController(
+      viewportFraction: 0.75,
+      initialPage: 0,
+    );
+
+    @override
+    void initState() {
+      super.initState();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (pageController.hasClients) {
+          pageController.jumpToPage(0);
+        }
+      });
+    }
+
+    @override
+    void dispose() {
+      pageController.dispose();
+      super.dispose();
+    }
 
     return Container(
       color: const Color(0xFFE3F2FD),
@@ -198,10 +217,12 @@ class _ReviewsSectionState extends State<ReviewsSection> {
           ),
           const SizedBox(height: 16),
           SizedBox(
-            height: 220,
+            height: 250,  // Increased from 220
             child: PageView.builder(
               controller: pageController,
               itemCount: reviews.length,
+              physics: const AlwaysScrollableScrollPhysics(),
+              padEnds: true,
               itemBuilder: (context, index) {
                 return AnimatedBuilder(
                   animation: pageController,
