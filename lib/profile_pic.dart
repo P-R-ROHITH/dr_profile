@@ -7,11 +7,12 @@ class ProfilePictureWithBadge extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
         child: InteractiveViewer(
-          panEnabled: true,
-          minScale: 0.5,
-          maxScale: 4.0,
-          child: Image.asset('assets/keerthi1.jpg'),
+          child: CircleAvatar(
+            radius: 120,
+            backgroundImage: const AssetImage('assets/keerthi1.jpg'),
+          ),
         ),
       ),
     );
@@ -25,37 +26,47 @@ class ProfilePictureWithBadge extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // Profile picture with blue border
           Positioned(
             left: 5,
             top: 50,
-            child: InkWell(
-              onTap: () => _showZoomDialog(context),
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.blue,
-                    width: 3,
+            child: Material(
+              color: Colors.transparent,
+              shape: const CircleBorder(),
+              child: InkWell(
+                customBorder: const CircleBorder(),
+                onTap: () => _showZoomDialog(context),
+                child: Container(
+                  width: 160,
+                  height: 160,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.blue,
+                      width: 3,
+                    ),
                   ),
-                ),
-                child: CircleAvatar(
-                  radius: 80,
-                  backgroundColor: Colors.transparent,
-                  backgroundImage: const AssetImage('assets/keerthi1.jpg'),
+                  child: ClipOval(
+                    child: Image.asset(
+                      'assets/keerthi1.jpg',
+                      fit: BoxFit.cover,
+                      width: 160,
+                      height: 160,
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
-          // Bronze badge
           Positioned(
             bottom: 15,
             right: 0,
             left: -20,
-            child: Image.asset(
-              'assets/bronze badge png.png',
-              width: 40,
-              height: 40,
+            child: IgnorePointer(
+              child: Image.asset(
+                'assets/bronze badge png.png',
+                width: 40,
+                height: 40,
+              ),
             ),
           ),
         ],
